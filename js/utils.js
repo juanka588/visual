@@ -1,5 +1,5 @@
 
-function setGradient(x, y, w, h, c1, c2, axis, r) {
+function setGradient(x, y, w, h, c1, c2, axis) {
 
     noFill();
 
@@ -20,7 +20,7 @@ function setGradient(x, y, w, h, c1, c2, axis, r) {
     }
 }
 
-function setGradientEllipse(x, y, w, h, c1, c2, axis, r) {
+function setGradientEllipse(x, y, w, h, c1, c2, axis) {
 
     noFill();
 

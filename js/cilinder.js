@@ -1,14 +1,17 @@
-function Cilinder(x, y) {
+function Cylinder(x, y, dir) {
     this.x = x;
     this.y = y;
     this.length;
-    this.color = 125;
+    this.velocity = 5;
     this.draw = function () {
-
-        setGradient(this.x-this.radius/2, this.y+this.radius/4,
-        this.radius, this.radius/2,
-        color(255), color(0), Y_AXIS);
-        stroke(255);
-        ellipse(this.x, this.y, this.radius, this.radius / 2);
+        if (dir === 0) {
+            setGradient(this.x, this.y, width / 10, height, color(255), color(0), X_AXIS);
+        } else {
+            setGradient(this.x, this.y, width / 10, height, color(0), color(255), X_AXIS);
+        }
+     
+    };
+    this.move = function () {
+        this.x -= this.velocity;
     };
 }

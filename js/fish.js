@@ -9,6 +9,6 @@ function Fish(x, y) {
         this.radius/2, this.radius/4, 
         color(255), color(0), Y_AXIS,this.radius);
         noStroke();
-        ellipse(this.x, this.y, this.radius, this.radius / 2);
+        ellipse(this.x, this.y, this.radius);
     };
 }
