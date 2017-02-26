@@ -1,3 +1,5 @@
+var Y_AXIS = 1;
+var X_AXIS = 2;
 
 function setGradient(x, y, w, h, c1, c2, axis) {
 
