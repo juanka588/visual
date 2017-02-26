@@ -2,7 +2,7 @@ function Cylinder(x, y, dir) {
     this.x = x;
     this.y = y;
     this.length;
-    this.velocity = 5;
+    this.velocity = 10;
     this.draw = function () {
         if (dir === 0) {
             setGradient(this.x, this.y, width / 10, height, color(255), color(0), X_AXIS);

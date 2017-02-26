@@ -20,6 +20,17 @@ function setGradient(x, y, w, h, c1, c2, axis) {
     }
 }
 
+function radialGradient(x, y, radius, c1, c2) {
+    noStroke();
+    ellipseMode(RADIUS);
+    for (var r = radius; r > 0; --r) {
+        var inter = map(r, 1, radius, 0, 1);
+        var c = lerpColor(c1, c2, inter);
+        fill(c);
+        ellipse(x, y, r, r);
+    }
+}
+
 function setGradientEllipse(x, y, w, h, c1, c2, axis) {
 
     noFill();
