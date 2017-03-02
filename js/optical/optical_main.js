@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 var illusions = 7;
-var current = 5;
+var current = 1;
 var active = true;
 
 var fishIllusion = new fishesIllusion();
