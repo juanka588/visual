@@ -5,44 +5,54 @@
  */
 
 var mode;
-var boundingSphere = true;
-var canRotate = false;
+var boundingSphere = false;
+var canRotate = true;
 var mouse = false;
-var solid;
+var solids = [];
+var totalObjs = 1;
 var radius = 200;
 
 
 function setup() {
     createCanvas(600, 600, WEBGL);
-    solid = null;
+    init(DODECAHEDRON);
+}
+function init(type) {
+    solids = [];
+    for (var i = 0; i < totalObjs; i++) {
+        solids.push(new PlatonicSolid(i * radius, i * radius, 1, radius, type));
+    }
 }
 
 function draw() {
     background(0);
-    var dirY = (mouseY / height - 0.5) * 4;
-    var dirX = (mouseX / width - 0.5) * 4;
-    directionalLight(204, 204, 204, dirX, dirY, 1);
     if (mouse && !canRotate) {
-        camera(mouseX, mouseY, (height / 2) / tan(PI / 6), width / 2, height / 2, 0, 0, 1, 0);
+        camera(mouseX, mouseY, (mouseY + mouseX) / tan(PI / 6.0));
     }
-    // draw the solid at the canvas center
-    //translate(width / 2, height / 2, 0);
+    if (mouse) {
+        // draw the solid at the canvas center
+        translate(width / 2, height / 2, 0);
+    }
     //scale(0.5, 0.5);
     if (canRotate && !mouse) {
         rotateX(frameCount * radians(90) / 50);
-        rotateY(frameCount * radians(90) / 50);
+        rotateY(-140 * radians(90) / 50);
     }
-    if (solid != null) {
-        solid.draw();
-        if (boundingSphere) {
-            push();
-            noStroke();
-            fill(0, 255, 255, 125);
-            sphere(solid.radius);
-            pop();
+    for (var i = 0; i < solids.length; i++) {
+        var solid = solids[i];
+        if (solid !== null) {
+            solid.draw();
+            if (boundingSphere) {
+                push();
+                var dirY = (mouseY / height - 0.5) * 4;
+                var dirX = (mouseX / width - 0.5) * 4;
+                fill(200);
+                directionalLight(0, 255, 255, dirX, dirY, dirX + dirY);
+                sphere(solid.radius);
+                pop();
+            }
         }
     }
-//    noLoop();
 }
 
 function keyPressed() {
@@ -50,19 +60,19 @@ function keyPressed() {
 //        mode = mode < 2 ? mode + 1 : 0;
 //    }
     if (key === 'T') {
-        solid = new PlatonicSolid(radius, TETRAHEDRON);
+        init(TETRAHEDRON);
     }
     if (key === 'C') {
-        solid = new PlatonicSolid(radius, CUBE);
+        init(CUBE);
     }
     if (key === 'O') {
-        solid = new PlatonicSolid(radius, OCTAHEDRON);
+        init(OCTAHEDRON);
     }
     if (key === 'D') {
-        solid = new PlatonicSolid(radius, DODECAHEDRON);
+        init(DODECAHEDRON);
     }
     if (key === 'I') {
-        solid = new PlatonicSolid(radius, ICOSAHEDRON);
+        init(ICOSAHEDRON);
     }
     if (key === 'B') {
         boundingSphere = !boundingSphere;

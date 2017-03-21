@@ -7,12 +7,16 @@ function PVector(x, y, z) {
     this.z = z;
 }
 
-function PlatonicSolid(r, type) {
+function PlatonicSolid(x, y, z, r, type) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
     this.radius = r;
     this.vertices = [];
     this.faces = [];
     this.type = type;
-    this.strokeWeight = 2;
+    this.sW = 2;
+    this.color = random(255);
     this.init = function () {
         this.buildShape();
     };
@@ -36,9 +40,14 @@ function PlatonicSolid(r, type) {
         }
     };
     this.drawImmediate = function () {
+        strokeWeight(this.sW);
+        stroke(127, 63, 120);
+        var dirY = (mouseY / height - 0.5) * 4;
+        var dirX = (mouseX / width - 0.5) * 4;
+        colorMode(HSB);
+//        fill(this.color, 255, 255);
+        directionalLight(this.color, 255, 255, dirX, dirY, 1);
         beginShape(TRIANGLES);
-        fill(0, 0, 255, 255);
-        noStroke();
         var v;
         for (var i = 0; i < this.faces.length; i++) {
             v = this.faces[i];
@@ -48,9 +57,7 @@ function PlatonicSolid(r, type) {
     };
     this.draw = function () {
         push();
-        strokeWeight(this.strokeWeight);
-        stroke(255, 255, 0);
-        fill(255, 0, 255, 100, 125);
+        translate(this.x, this.y, this.z);
         this.drawImmediate();
         pop();
     };
@@ -224,18 +231,18 @@ function Dodecahedron(ps) {
     var ratio1 = 1.618033; //golden mean
     var ratio2 = 0.618033;
 
-    var v1 = new PVector(0, ratio2, ratio1);
-    var v2 = new PVector(0, ratio2, -ratio1);
-    var v3 = new PVector(0, -ratio2, ratio1);
-    var v4 = new PVector(0, -ratio2, -ratio1);
-    var v5 = new PVector(ratio1, 0, ratio2);
-    var v6 = new PVector(ratio1, 0, -ratio2);
-    var v7 = new PVector(-ratio1, 0, ratio2);
-    var v8 = new PVector(-ratio1, 0, -ratio2);
-    var v9 = new PVector(ratio2, ratio1, 0);
-    var v10 = new PVector(ratio2, -ratio1, 0);
-    var v11 = new PVector(-ratio2, ratio1, 0);
-    var v12 = new PVector(-ratio2, -ratio1, 0);
+    var v1 = new PVector(0.0, ratio2, ratio1);
+    var v2 = new PVector(0.0, ratio2, -ratio1);
+    var v3 = new PVector(0.0, -ratio2, ratio1);
+    var v4 = new PVector(0.0, -ratio2, -ratio1);
+    var v5 = new PVector(ratio1, 0.0, ratio2);
+    var v6 = new PVector(ratio1, 0.0, -ratio2);
+    var v7 = new PVector(-ratio1, 0.0, ratio2);
+    var v8 = new PVector(-ratio1, 0.0, -ratio2);
+    var v9 = new PVector(ratio2, ratio1, 0.0);
+    var v10 = new PVector(ratio2, -ratio1, 0.0);
+    var v11 = new PVector(-ratio2, ratio1, 0.0);
+    var v12 = new PVector(-ratio2, -ratio1, 0.0);
     var v13 = new PVector(1.0, 1.0, 1.0);
     var v14 = new PVector(1.0, 1.0, -1.0);
     var v15 = new PVector(1.0, -1.0, 1.0);
@@ -424,7 +431,7 @@ function Dodecahedron(ps) {
 }
 
 function div(pVector, ratio) {
-    return new PVector(pVector.x / ratio, pVector.y / ratio, pVector.y / ratio);
+    return new PVector(pVector.x / ratio, pVector.y / ratio, pVector.z / ratio);
 }
 
 function Icosahedron(ps) {
