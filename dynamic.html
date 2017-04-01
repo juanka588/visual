@@ -3,17 +3,159 @@
     <head>
         <meta charset="UTF-8">
         <title>Transformations</title>
+        <!--Import Google Icon Font-->
+        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="css/materialize.min.css" rel="stylesheet" type="text/css"/>
+
+        <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="js/libs/p5.js"></script>
+        <script src="js/libs/materialize.min.js"></script>
+        <script src="js/controls.js"></script>
         <script src="js/dynamic/main.js"></script>
+<!--        <script src="js/platonic/PlatonicSolid.js"></script>
+        <script src="js/platonic/main.js"></script>-->
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <body>
-        <div class="container">
-            <label for="angleInput">&Aacute;ngulo Z</label><input type="range" min="0" max="180" id="angleInput">
-            <label for="stepInput">Alto</label><input type="range" min="10" max="30" id="stepInput">
-            <label for="axeAngleX">Eje X</label><input type="range" min="0" max="180" id="axeAngleX">
-            <label for="axeAngleY">Eje Y</label><input type="range" min="0" max="180" id="axeAngleY">
-            <label for="axeAngleZ">Eje Z</label><input type="range" min="0" max="180" id="axeAngleZ">
-            <div id="sketch-holder"></div>
+        <div class="">
+            <div class="row">
+                <div class="col s12 m3" id="left-controls">
+                    <ul class="collapsible" data-collapsible="accordion">
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons">settings</i>Custom</div>
+                            <div class="collapsible-body">
+                                <p class="range-field">
+                                    <label for="angleInput">&Aacute;ngulo Z</label><input type="range" min="0" max="180" id="angleInput">
+                                </p>
+                                <p class="range-field">
+                                    <label for="stepInput">Alto</label><input type="range" min="10" max="30" id="stepInput">
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons">loop</i>Rotation</div>
+                            <div class="collapsible-body">
+                                <p class="range-field">
+                                    <label for="axeAngleX">Eje X</label><input type="range" min="0" max="180" id="axeAngleX">
+                                </p>
+                                <p class="range-field">
+                                    <label for="axeAngleY">Eje Y</label><input type="range" min="0" max="180" id="axeAngleY">
+                                </p>
+                                <p class="range-field">
+                                    <label for="axeAngleZ">Eje Z</label><input type="range" min="0" max="180" id="axeAngleZ">
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div id="sketch-holder" class="col s6">
+                </div>
+                <div class="col s12 m3" id="right-controls">
+
+                    <ul class="collapsible" data-collapsible="accordion">
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons">open_with</i>Camera</div>
+                            <div class="collapsible-body">
+                                <p class="range-field">
+                                    <label for="cameraX">Camera X</label>
+                                    <input type="range" value="0" max="20000" min="-20000" step="100" id="cameraX">
+                                </p>
+                                <p class="range-field">
+                                    <label for="cameraY">Camera Y</label>
+                                    <input type="range" value="0" max="20000" min="-20000" step="100" id="cameraY">
+                                </p>
+                                <p class="range-field">
+                                    <label for="cameraZ">Camera Z</label>
+                                    <input type="range" value="0" max="20000" min="-20000" step="100" id="cameraZ">
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons">visibility</i>Light</div>
+                            <div class="collapsible-body">
+                                <div class="row">
+                                    <label class="col s6" for="light-color">Light Color:</label>
+                                    <input  class="col s6" type="color" value="#FFFFFF" id="light-color">
+                                </div>
+                                <div id="light-selector">
+                                    <p>
+                                        <input name="lightGroup" type="radio" id="amLight" />
+                                        <label for="amLight">Ambient Light</label>
+                                    </p>
+                                    <p>
+                                        <input name="lightGroup" type="radio" id="ptLight" checked/>
+                                        <label for="ptLight">Point Light</label>
+                                    </p>
+                                    <div id="pointModal" class="modal bottom-sheet">
+                                        <div class="modal-content">
+                                            <h5>Point Light</h5>
+                                            <div class="col s2">
+                                                <label for="pointLightX">Light X</label>
+                                                <input type="number" value="0" id="pointLightX">
+                                            </div>
+                                            <div class="col s2">
+                                                <label for="pointLightY">Light Y</label>
+                                                <input type="number" value="0" id="pointLightY">
+                                            </div>
+                                            <div class="col s2">
+                                                <label for="pointLightZ">Light Z</label>
+                                                <input type="number" value="0" id="pointLightZ">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Done</a>
+                                        </div>
+                                    </div>
+                                    <p>
+                                        <input name="lightGroup" type="radio" id="dirLight" />
+                                        <label for="dirLight">Directional Light</label>
+                                    </p>
+                                    <div id="dirModal" class="modal bottom-sheet">
+                                        <div class="modal-content">
+                                            <h5>Directional Light</h5>
+                                            <div class="col s2">
+                                                <label for="dirLightX">Light X</label>
+                                                <input type="number" value="0" id="dirLightX">
+                                            </div>
+                                            <div class="col s2">
+                                                <label for="dirLightY">Light Y</label>
+                                                <input type="number" value="0" id="dirLightY">
+                                            </div>
+                                            <div class="col s2">
+                                                <label for="dirLightZ">Light Z</label>
+                                                <input type="number" value="0" id="dirLightZ">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Done</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons">whatshot</i>Action</div>
+                            <div class="collapsible-body">
+                                <p class="range-field row">
+                                    <label  class="col s6" for="material-color">Material Color:</label>
+                                    <input  class="col s6" type="color" value="#00FF48" id="material-color">
+                                </p>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <select id="material-type">
+                                            <option value="0">Normal</option>
+                                            <option value="1">Specular</option>
+                                            <option value="2">Ambient</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </body>
 </html>

@@ -42,11 +42,6 @@ function PlatonicSolid(x, y, z, r, type) {
     this.drawImmediate = function () {
         strokeWeight(this.sW);
         stroke(127, 63, 120);
-        var dirY = (mouseY / height - 0.5) * 4;
-        var dirX = (mouseX / width - 0.5) * 4;
-        colorMode(HSB);
-//        fill(this.color, 255, 255);
-        directionalLight(this.color, 255, 255, dirX, dirY, 1);
         beginShape(TRIANGLES);
         var v;
         for (var i = 0; i < this.faces.length; i++) {

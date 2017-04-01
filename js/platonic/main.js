@@ -9,13 +9,15 @@ var boundingSphere = false;
 var canRotate = true;
 var mouse = false;
 var solids = [];
-var totalObjs = 100;
-var radius = 20;
+var totalObjs = 1;
+var radius = 200;
+var controls;
 
 
 function setup() {
     var canvas = createCanvas(600, 600, WEBGL);
     canvas.parent('sketch-holder');
+    controls = new Controls();
     init(DODECAHEDRON);
 }
 function init(type) {
@@ -27,39 +29,24 @@ function init(type) {
 
 function draw() {
     background(0);
-    if (mouse && !canRotate) {
-        camera(mouseX, mouseY, (mouseY + mouseX) / tan(PI / 6.0));
-    }
-    if (mouse) {
-        // draw the solid at the canvas center
-        translate(width / 2, height / 2, 0);
-    }
-    //scale(0.5, 0.5);
-    if (canRotate && !mouse) {
-        rotateX(frameCount * radians(90) / 50);
-        rotateY(-140 * radians(90) / 50);
-    }
+    push();
+    controls.controle();
     for (var i = 0; i < solids.length; i++) {
         var solid = solids[i];
         if (solid !== null) {
             solid.draw();
             if (boundingSphere) {
                 push();
-                var dirY = (mouseY / height - 0.5) * 4;
-                var dirX = (mouseX / width - 0.5) * 4;
-                fill(200);
-                directionalLight(0, 255, 255, dirX, dirY, dirX + dirY);
+                specularMaterial(200, 0, 0);
                 sphere(solid.radius);
                 pop();
             }
         }
     }
+    pop();
 }
 
 function keyPressed() {
-//    if (key === ' ') {
-//        mode = mode < 2 ? mode + 1 : 0;
-//    }
     if (key === 'T') {
         init(TETRAHEDRON);
     }
