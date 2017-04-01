@@ -15,11 +15,11 @@ var rampM = new ramp();
 var motionBid = new motionBiding();
 
 function setup() {
-    createCanvas(600, 600);
+    var canvas = createCanvas(600, 600);
+    canvas.parent('sketch-holder');
     fishIllusion.setup();
     reverseM.setup();
     chaserM.setup();
-    //noLoop();
 }
 
 function draw() {

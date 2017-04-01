@@ -9,12 +9,13 @@ var boundingSphere = false;
 var canRotate = true;
 var mouse = false;
 var solids = [];
-var totalObjs = 1;
-var radius = 200;
+var totalObjs = 100;
+var radius = 20;
 
 
 function setup() {
-    createCanvas(600, 600, WEBGL);
+    var canvas = createCanvas(600, 600, WEBGL);
+    canvas.parent('sketch-holder');
     init(DODECAHEDRON);
 }
 function init(type) {

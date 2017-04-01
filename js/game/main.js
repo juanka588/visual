@@ -7,7 +7,8 @@ var bullets = new Array();
 var ship;
 var enemyArray = new Array();
 function setup() {
-    createCanvas(600, 600);
+    var canvas = createCanvas(600, 600);
+    canvas.parent('sketch-holder');
     enemyArray.push(new Enemy(width / 2, height / 2));
     ship = new Ship(width / 2, height);
 
@@ -15,13 +16,13 @@ function setup() {
 function draw() {
     background(0);
     ship.draw();
-    for(var i = 0; i < enemyArray.length; i++){
-   
-        if (enemyArray[i].destroyed){
+    for (var i = 0; i < enemyArray.length; i++) {
+
+        if (enemyArray[i].destroyed) {
             //TODO: mustbe removed
-        }else{
+        } else {
             enemyArray[i].draw();
-            
+
         }
     }
     ship.move(mouseX);
