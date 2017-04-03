@@ -1,5 +1,5 @@
 /**
- * Created by usuario13 on 29/03/2017.
+ * Created by Juan Camilo on 29/03/2017.
  */
 
 var angle;
@@ -12,7 +12,7 @@ function setup() {
     canvas.parent('sketch-holder');
     angle = PI / 4;
     controls = new Controls();
-    length = 40;
+    length = 50;
     step = 10;
     background(255, 0, 255);
 }
@@ -20,10 +20,10 @@ function setup() {
 function draw() {
     angle = (document.getElementById('angleInput').value / 180) * PI;
     step = (document.getElementById('stepInput').value);
-    background(120);
+    background(0);
     push();
     controls.controle();
-    fractal(60, 1);
+    fractal(length, 1);
     pop();
 }
 
@@ -32,22 +32,25 @@ function fractal(size, dir) {
         return;
     }
     push();
-    stroke(255);
+    var shift = {x: 0, y: 0, z: size};
     strokeWeight(2);
-//    rotateX(frameCount * 0.01);
-    box(dir * length);
+    stroke(255);
+    colorMode(HSB);
+    specularMaterial(size + length % 255, 255, 255);
+    rotateX(frameCount * 0.01);
+    sphere(dir * size);
     push();
-    translate(dir * length, 0, dir * length);
+    translate(dir * size + shift.x, 0 + shift.y, dir * size + shift.z);
     rotateZ(angle);
-//    rotateX(frameCount * 0.01);
-    box(dir * length);
+    rotateX(frameCount * 0.01);
+    sphere(dir * size);
     fractal(size - step, dir);
     pop();
     push();
-    translate(dir * length, 0, dir * length);
+    translate(dir * size + shift.x, 0 + shift.y, dir * size + shift.z);
     rotateZ(-angle);
-//    rotateX(frameCount * 0.01);
-    box(dir * length);
+    rotateX(frameCount * 0.01);
+    sphere(dir * size);
     fractal(size - step, dir);
     pop();
     pop();

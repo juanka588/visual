@@ -30,12 +30,12 @@ $(document).ready(function () {
  * 
  * @type Number 0 ambient, 1 point, 2 directional
  */
-var lightToApply = 0;
+var lightToApply = 2;
 /**
  * 
  * @type Number 0 normalMaterial 1 specularMaterial 2 ambientMaterial 
  */
-var materialType = 0;
+var materialType = "1";
 
 function Controls() {
     this.axeAngleX;
@@ -70,23 +70,29 @@ function Controls() {
             rotate(this.axeAngleX);
         }
 
-        this.lightColor = document.getElementById('light-color').value;
+        this.lightColor = hexToRGB(document.getElementById('light-color').value);
         this.materialColor = document.getElementById('material-color').value;
+        var locY = (mouseY / height - 0.5) * (-2);
+        var locX = (mouseX / width - 0.5) * 2;
+//        ambientLight(50);
+//        directionalLight(this.lightColor.R, this.lightColor.G, this.lightColor.B, 0.25, 0.25, 0.25);
+//        pointLight(this.lightColor.R, this.lightColor.G, this.lightColor.B, locX, locY, 0);
+//        pointLight(this.lightColor.R, this.lightColor.G, this.lightColor.B, -locX, -locY, 0);
         switch (lightToApply) {
             case 0:
-                ambientLight(this.lightColor);
+                ambientLight(50);
                 break;
             case 1:
                 this.dirX = document.getElementById('pointLightX').value;
                 this.dirY = document.getElementById('pointLightY').value;
                 this.dirZ = document.getElementById('pointLightZ').value;
-                pointLight(this.lightColor, this.dirX, this.dirY, this.dirZ);
+                pointLight(this.lightColor.R, this.lightColor.G, this.lightColor.B, locX, locY, 0);
                 break;
             case 2:
                 this.dirX = document.getElementById('dirLightX').value;
                 this.dirY = document.getElementById('dirLightY').value;
                 this.dirZ = document.getElementById('dirLightZ').value;
-                directionalLight(this.lightColor, this.dirX, this.dirY, this.dirZ);
+                directionalLight(this.lightColor.R, this.lightColor.G, this.lightColor.B, 0.25, 0.25, 0.25);
                 break;
         }
         materialType = document.getElementById('material-type').value;
@@ -104,4 +110,19 @@ function Controls() {
 
     };
 }
-
+function hexToRGB(hex, alphaYes) {
+    hex = hex.replace('#', '');
+    var r = parseInt(hex.substring(0, hex.length / 3), 16);
+    var g = parseInt(hex.substring(hex.length / 3, 2 * hex.length / 3), 16);
+    var b = parseInt(hex.substring(2 * hex.length / 3, 3 * hex.length / 3), 16);
+    if (alphaYes)
+        return new ColorArray(r, g, b, 1);
+    else
+        return new ColorArray(r, g, b);
+}
+function ColorArray(R, G, B, A) {
+    this.R = R;
+    this.G = G;
+    this.B = B;
+    this.A = A;
+}
