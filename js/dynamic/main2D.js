@@ -1,58 +1,60 @@
-/**
- * Created by usuario13 on 29/03/2017.
- */
+var controls = new Controls();
 
-var angle;
-var length;
-var step;
-var controls;
+var sketch = function (p) {
+    var angle;
+    var length;
+    var step;
 
-function setup() {
-    var canvas = createCanvas(600, 600);
-    canvas.parent('sketch-holder');
-    angle = PI / 4;
-    controls = new Controls();
-    length = 40;
-    step = 10;
-    background(255, 0, 255);
-}
+    p.setup = function () {
+        var canvas = p.createCanvas(600, 600);
+        canvas.parent('sketch-holder');
+        angle = p.PI / 4;
+        length = 40;
+        step = 10;
+        p.background(255, 0, 255);
+    };
 
-function draw() {
-    angle = (document.getElementById('angleInput').value / 180) * PI;
-    step = (document.getElementById('stepInput').value);
-    background(0);
-    push();
-        controls.controle();
-        push();
-            translate(width / 2, height);
-            fractal(60, -1);
-        pop();
-        push();
-            translate(width / 2, 0);
-            fractal(60, 1);
-        pop();
-    pop();
-}
+    p.draw = function () {
+        angle = (document.getElementById('angleInput').value / 180) * p.PI;
+        step = (document.getElementById('stepInput').value);
+        p.background(0);
+        p.push();
+        controls.controle(p);
+        p.push();
+        p.translate(p.width / 2, p.height);
+        fractal(60, -1);
+        p.pop();
+        p.push();
+        p.translate(p.width / 2, 0);
+        fractal(60, 1);
+        p.pop();
+        p.pop();
+    };
 
-function fractal(size, dir) {
-    if (size < 10) {
-        return;
+    function fractal(size, dir) {
+        if (size < 10) {
+            return;
+        }
+        p.push();
+        p.stroke(255);
+        p.strokeWeight(2);
+        p.line(0, 0, 0, dir * length);
+        p.push();
+        p.translate(0, dir * length);
+        p.rotate(angle);
+        p.line(0, 0, 0, dir * length);
+        fractal(size - step, dir);
+        p.pop();
+        p.push();
+        p.translate(0, dir * length);
+        p.rotate(-angle);
+        p.line(0, 0, 0, dir * length);
+        fractal(size - step, dir);
+        p.pop();
+        p.pop();
     }
-    push();
-        stroke(255);
-        strokeWeight(2);
-        line(0, 0, 0, dir * length);
-        push();
-            translate( 0, dir * length);
-            rotate(angle);
-            line(0, 0, 0, dir * length);
-            fractal(size - step, dir);
-        pop();
-        push();
-            translate(0, dir * length);
-            rotate(-angle);
-            line(0, 0, 0, dir * length);
-            fractal(size - step, dir);
-        pop();
-    pop();
+};
+
+if (controls === undefined) {
+    new p5(sketch);
 }

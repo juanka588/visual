@@ -7,7 +7,7 @@ function PVector(x, y, z) {
     this.z = z;
 }
 
-function PlatonicSolid(x, y, z, r, type) {
+function PlatonicSolid(x, y, z, r, type, p) {
     this.x = x;
     this.y = y;
     this.z = z;
@@ -16,45 +16,45 @@ function PlatonicSolid(x, y, z, r, type) {
     this.faces = [];
     this.type = type;
     this.sW = 2;
-    this.color = random(255);
+    this.color = p.random(255);
     this.init = function () {
         this.buildShape();
     };
     this.buildShape = function () {
         switch (this.type) {
             case TETRAHEDRON:
-                Tetrahedron(this);
+                Tetrahedron(this, p);
                 break;
             case CUBE:
-                Cube(this);
+                Cube(this, p);
                 break;
             case OCTAHEDRON:
-                Octahedron(this);
+                Octahedron(this, p);
                 break;
             case DODECAHEDRON:
-                Dodecahedron(this);
+                Dodecahedron(this, p);
                 break;
             case ICOSAHEDRON:
-                Icosahedron(this);
+                Icosahedron(this, p);
                 break;
         }
     };
-    this.drawImmediate = function () {
-        strokeWeight(this.sW);
-        stroke(127, 63, 120);
-        beginShape(TRIANGLES);
+    this.drawImmediate = function (p) {
+        p.strokeWeight(this.sW);
+        p.stroke(127, 63, 120);
+        p.beginShape(p.TRIANGLES);
         var v;
         for (var i = 0; i < this.faces.length; i++) {
             v = this.faces[i];
-            vertex(this.radius * v.x, this.radius * v.y, this.radius * v.z);
+            p.vertex(this.radius * v.x, this.radius * v.y, this.radius * v.z);
         }
-        endShape(CLOSE);
+        p.endShape(p.CLOSE);
     };
-    this.draw = function () {
-        push();
-        translate(this.x, this.y, this.z);
-        this.drawImmediate();
-        pop();
+    this.draw = function (p) {
+        p.push();
+        p.translate(this.x, this.y, this.z);
+        this.drawImmediate(p);
+        p.pop();
     };
     this.init();
 
@@ -65,8 +65,8 @@ function PlatonicSolid(x, y, z, r, type) {
  * @param {Platonic Solid} ps
  * @returns created shape
  */
-function Tetrahedron(ps) {
-    var ratio = sqrt(6) / 4.22;
+function Tetrahedron(ps, p) {
+    var ratio = p.sqrt(6) / 4.22;
     var v1 = new PVector(1 * ratio, 1 * ratio, 1 * ratio);
     var v2 = new PVector(-1 * ratio, -1 * ratio, 1 * ratio);
     var v3 = new PVector(-1 * ratio, 1 * ratio, -1 * ratio);
@@ -97,15 +97,15 @@ function Tetrahedron(ps) {
     ps.faces.push(v2);
 }
 
-function Cube(ps) {
-    var v1 = new PVector(-1 / sqrt(3), -1 / sqrt(3), -1 / sqrt(3));
-    var v2 = new PVector(-1 / sqrt(3), -1 / sqrt(3), 1 / sqrt(3));
-    var v3 = new PVector(-1 / sqrt(3), 1 / sqrt(3), -1 / sqrt(3));
-    var v4 = new PVector(-1 / sqrt(3), 1 / sqrt(3), 1 / sqrt(3));
-    var v5 = new PVector(1 / sqrt(3), -1 / sqrt(3), -1 / sqrt(3));
-    var v6 = new PVector(1 / sqrt(3), -1 / sqrt(3), 1 / sqrt(3));
-    var v7 = new PVector(1 / sqrt(3), 1 / sqrt(3), -1 / sqrt(3));
-    var v8 = new PVector(1 / sqrt(3), 1 / sqrt(3), 1 / sqrt(3));
+function Cube(ps, p) {
+    var v1 = new PVector(-1 / p.sqrt(3), -1 / p.sqrt(3), -1 / p.sqrt(3));
+    var v2 = new PVector(-1 / p.sqrt(3), -1 / p.sqrt(3), 1 / p.sqrt(3));
+    var v3 = new PVector(-1 / p.sqrt(3), 1 / p.sqrt(3), -1 / p.sqrt(3));
+    var v4 = new PVector(-1 / p.sqrt(3), 1 / p.sqrt(3), 1 / p.sqrt(3));
+    var v5 = new PVector(1 / p.sqrt(3), -1 / p.sqrt(3), -1 / p.sqrt(3));
+    var v6 = new PVector(1 / p.sqrt(3), -1 / p.sqrt(3), 1 / p.sqrt(3));
+    var v7 = new PVector(1 / p.sqrt(3), 1 / p.sqrt(3), -1 / p.sqrt(3));
+    var v8 = new PVector(1 / p.sqrt(3), 1 / p.sqrt(3), 1 / p.sqrt(3));
 
     ps.vertices.push(v1);
     ps.vertices.push(v2);
@@ -165,7 +165,7 @@ function Cube(ps) {
     ps.faces.push(v8);
 }
 
-function Octahedron(ps) {
+function Octahedron(ps, p) {
     var v1 = new PVector(-1, 0, 0);
     var v2 = new PVector(0, 1, 0);
     var v3 = new PVector(0, 0, -1);
@@ -221,7 +221,7 @@ function Octahedron(ps) {
     ps.faces.push(v2);
 }
 
-function Dodecahedron(ps) {
+function Dodecahedron(ps, p) {
     var max = 0.93;
     var ratio1 = 1.618033; //golden mean
     var ratio2 = 0.618033;
@@ -429,7 +429,7 @@ function div(pVector, ratio) {
     return new PVector(pVector.x / ratio, pVector.y / ratio, pVector.z / ratio);
 }
 
-function Icosahedron(ps) {
+function Icosahedron(ps, p) {
     var ratio1 = 0.525731;
     var ratio2 = 0.850650;
     var v1 = new PVector(-ratio1, 0, ratio2);

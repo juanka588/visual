@@ -3,43 +3,21 @@
     <head>
         <meta charset="UTF-8">
         <title>Transformations</title>
+        <!--Import Google Icon Font-->
+        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="css/materialize.min.css" rel="stylesheet" type="text/css"/>
+
+        <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="js/libs/p5.js"></script>
+        <script src="js/libs/materialize.min.js"></script>
         <script src="js/controls.js"></script>
         <script src="js/dynamic/main2D.js"></script>
-        <link href="css/materialize.min.css" rel="stylesheet" type="text/css"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <body>
-        <div class="container">
-
-            <div class="row">
-                <div class="col s12" id="top-controls">
-                    <label for="angleInput">&Aacute;ngulo Z</label><input type="range" min="0" max="180" id="angleInput">
-                    <label for="stepInput">Alto</label><input type="range" min="10" max="30" id="stepInput">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col s3" id="left-controls">
-                    <p class="range-field">
-                        <label for="axeAngleX">Eje X</label><input type="range" min="0" max="180" id="axeAngleX">
-                    </p>
-                    <p class="range-field">
-                        <label for="axeAngleY">Eje Y</label><input type="range" min="0" max="180" id="axeAngleY">
-                    </p>
-                    <p class="range-field">
-                        <label for="axeAngleZ">Eje Z</label><input type="range" min="0" max="180" id="axeAngleZ">
-                    </p>
-                </div>
-                <div id="sketch-holder" class="col m6">
-                </div>
-                <div class="col s3" id="right-controls">
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col s12" id="bottom-controls">
-                </div>
-            </div>
-
+        <div class="main-container">
+            <div id="sketch-holder" class="col m6"></div>
         </div>
     </body>
 </html>

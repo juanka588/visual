@@ -1,10 +1,20 @@
-$(document).ready(function () {
+function createElements() {
+    $.get("controlsView.html", function (data) {
+//        console.log(data);
+        $(".main-container").html(data);
+//        alert("Load was performed.");
+        addListeners();
+        loadSketch();
+    });
+}
+
+function addListeners() {
     $('.collapsible').collapsible();
     $('select').material_select();
     $('.modal').modal(
             {complete: function () {
                     var id = $(this)[0].id;
-                    console.log("done for id: " + id);
+                    //console.log("done for id: " + id);
                     switch (id) {
                         case"pointModal":
                             lightToApply = 1;
@@ -25,7 +35,10 @@ $(document).ready(function () {
             $('#dirModal').modal('open');
         }
     });
-});
+}
+
+
+
 /**
  * 
  * @type Number 0 ambient, 1 point, 2 directional
@@ -38,6 +51,7 @@ var lightToApply = 2;
 var materialType = "1";
 
 function Controls() {
+    createElements();
     this.axeAngleX;
     this.axeAngleY;
     this.axeAngleZ;
@@ -52,59 +66,59 @@ function Controls() {
     this.dirY;
     this.dirZ;
 
-    this.controle = function () {
-        this.axeAngleX = (document.getElementById('axeAngleX').value / 180) * PI;
-        this.axeAngleY = (document.getElementById('axeAngleY').value / 180) * PI;
-        this.axeAngleZ = (document.getElementById('axeAngleZ').value / 180) * PI;
+    this.controle = function (p) {
+        var enabled3D = true;
+        this.axeAngleX = (document.getElementById('axeAngleX').value / 180) * p.PI;
+        this.axeAngleY = (document.getElementById('axeAngleY').value / 180) * p.PI;
+        this.axeAngleZ = (document.getElementById('axeAngleZ').value / 180) * p.PI;
 
-        this.cameraX = (document.getElementById('cameraX').value / 180) * PI;
-        this.cameraY = (document.getElementById('cameraY').value / 180) * PI;
-        this.cameraZ = (document.getElementById('cameraZ').value / 180) * PI;
+        this.cameraX = (document.getElementById('cameraX').value / 180) * p.PI;
+        this.cameraY = (document.getElementById('cameraY').value / 180) * p.PI;
+        this.cameraZ = (document.getElementById('cameraZ').value / 180) * p.PI;
         try {
-            camera(this.cameraX, this.cameraY, this.cameraZ);
-            rotateY(this.axeAngleY);
-            rotateX(this.axeAngleX);
-            rotateZ(this.axeAngleZ);
+            p.camera(this.cameraX, this.cameraY, this.cameraZ);
+            p.rotateY(this.axeAngleY);
+            p.rotateX(this.axeAngleX);
+            p.rotateZ(this.axeAngleZ);
         }
         catch (e) {
-            rotate(this.axeAngleX);
+            p.rotate(this.axeAngleX);
+            enabled3D = false;
         }
-
+        if (!enabled3D) {
+            return;
+        }
         this.lightColor = hexToRGB(document.getElementById('light-color').value);
         this.materialColor = document.getElementById('material-color').value;
-        var locY = (mouseY / height - 0.5) * (-2);
-        var locX = (mouseX / width - 0.5) * 2;
-//        ambientLight(50);
-//        directionalLight(this.lightColor.R, this.lightColor.G, this.lightColor.B, 0.25, 0.25, 0.25);
-//        pointLight(this.lightColor.R, this.lightColor.G, this.lightColor.B, locX, locY, 0);
-//        pointLight(this.lightColor.R, this.lightColor.G, this.lightColor.B, -locX, -locY, 0);
+        var locY = (p.mouseY / p.height - 0.5) * (-2);
+        var locX = (p.mouseX / p.width - 0.5) * 2;
         switch (lightToApply) {
             case 0:
-                ambientLight(50);
+                p.ambientLight(50);
                 break;
             case 1:
                 this.dirX = document.getElementById('pointLightX').value;
                 this.dirY = document.getElementById('pointLightY').value;
                 this.dirZ = document.getElementById('pointLightZ').value;
-                pointLight(this.lightColor.R, this.lightColor.G, this.lightColor.B, locX, locY, 0);
+                p.pointLight(this.lightColor.R, this.lightColor.G, this.lightColor.B, locX, locY, 0);
                 break;
             case 2:
                 this.dirX = document.getElementById('dirLightX').value;
                 this.dirY = document.getElementById('dirLightY').value;
                 this.dirZ = document.getElementById('dirLightZ').value;
-                directionalLight(this.lightColor.R, this.lightColor.G, this.lightColor.B, 0.25, 0.25, 0.25);
+                p.directionalLight(this.lightColor.R, this.lightColor.G, this.lightColor.B, 0.25, 0.25, 0.25);
                 break;
         }
         materialType = document.getElementById('material-type').value;
         switch (materialType) {
             case "0":
-                normalMaterial();
+                p.normalMaterial();
                 break;
             case "1":
-                specularMaterial(this.materialColor);
+                p.specularMaterial(this.materialColor);
                 break;
             case "2":
-                ambientMaterial(this.materialColor);
+                p.ambientMaterial(this.materialColor);
                 break;
         }
 
@@ -125,4 +139,8 @@ function ColorArray(R, G, B, A) {
     this.G = G;
     this.B = B;
     this.A = A;
+}
+
+function loadSketch() {
+    new p5(sketch);
 }
