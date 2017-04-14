@@ -6,10 +6,21 @@ function Spider(x, y, z, size) {
     this.dir = 1;
     this.speed = 0.9;
     this.isMoving = false;
+    this.tmp = {x: 0, y: 0};
     this.draw = function () {
+        var angle = ((this.z / (this.size + (width * 2))) + 1) * PI / 2 - PI / 2;
+        if (this.y > 0) {
+            angle = angle * -1;
+        }
         push();
         translate(this.x, this.y, this.z);
+        push();
+        rotateX(angle);
         this.drawBody();
+//        specularMaterial(250, 120, 60);
+//        translate(0, 0, -this.size);
+//        plane(400, 400);
+        pop();
         if (this.isMoving) {
             var rotation = frameCount % 40;
             if (rotation === 0) {
@@ -20,6 +31,7 @@ function Spider(x, y, z, size) {
             }
         }
         translate(0, this.size / 3, 0);
+        rotateX(angle);
         push();
         if (this.isMoving) {
             rotateZ(PI * -40 / 180);
@@ -42,14 +54,20 @@ function Spider(x, y, z, size) {
         pop();
     };
 
-    this.move = function (destination, vel) {
+    this.move = function (r, vel) {
         if (this.isMoving) {
-            this.x += vel.x;
-            this.y += vel.y;
-            if (dist(this.x, destination.x) <= vel.x + 10
-                    && dist(this.y, destination.y) <= vel.y + 10) {
-                this.isMoving = false;
-            }
+            this.tmp.x += vel.x;
+            this.tmp.y += vel.y;
+            this.tmp.x = this.tmp.x % 360;
+            this.tmp.y = this.tmp.y % 360;
+            //vel tetha and alpha
+            var tetha;//= acos(this.z / r);
+            tetha = PI * (this.tmp.x) / 180;
+            var alpha;//= 2 * asin(this.y / (sqrt(this.x * this.x + this.y * this.y) + this.x));
+            alpha = PI * (this.tmp.y) / 180;
+            this.x = r * sin(tetha) * sin(alpha);
+            this.y = r * cos(tetha) * sin(alpha);
+            this.z = r * cos(alpha) - r;
         }
     };
 

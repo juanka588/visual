@@ -1,16 +1,29 @@
 var controls = new Controls();
 
-var spider;
+var spiders = [];
 var batman;
 var img;
 var world;
-var destination;
-var velocity;
+var worldSize;
+var dirs = [];
 
 function setup() {
     var canvas = createCanvas(600, 600, WEBGL);
     canvas.parent('sketch-holder');
-    spider = new Spider(0, 0, 0, 100);
+    for (var i = 0; i < 4; i++) {
+        spiders[i] = new Spider(0, i * 100, 0, 100);
+        switch (i) {
+//            case 0:
+//                dirs[i] = {x: 0, y: -0.7};
+//                break;
+//            case 1:
+//                dirs[i] = {x: 0, y: -0.3};
+//                break;
+            default:
+                dirs[i] = {x: 0, y: -random(0.1, 1)};
+                break;
+        }
+    }
 //    batman = loadModel('assets/spider/Only_Spider_with_Animations_Export.obj');
 //    batman = loadModel("assets/Batman/BatmanArmoured.obj");
 //    img = loadImage("assets/spider/textures/Spinnen_Bein_tex.jpg");
@@ -18,31 +31,39 @@ function setup() {
     world = loadImage("images/grass.jpg");
 }
 function draw() {
-    background("gray");
+    background("white");
     push();
-    translate(-spider.x, -spider.y, 0);
+    worldSize = width * 2;
+    translate(0, 0, -worldSize - spiders[0].size);
     specularMaterial("red");
     controls.controle();
     push();
-    texture(img);
-    spider.draw();
-    spider.move(destination, velocity);
+    for (var i = 0; i < spiders.length; i++) {
+        rotateZ(i * PI / 4);
+        //texture(img);
+        push();
+        spiders[i].draw();
+        pop();
+        spiders[i].move(worldSize, dirs[i]);
+    }
     pop();
     push();
-    translate(0, 0, -width * 2 - spider.size);
-    texture(world);
-    sphere(width * 2);
+    translate(0, 0, -worldSize - spiders[0].size);
+//    texture(world);
+    specularMaterial(120, 120, 120, 120);
+    sphere(worldSize);
+    pop();
 //    model(batman);
     pop();
 }
 function keyPressed() {
     if (key === "W") {
-        if (spider.isMoving) {
-            spider.isMoving = false;
-        } else {
-            spider.isMoving = true;
-            destination = {x: spider.x, y: spider.y - spider.size};
-            velocity = {x: 0, y: -3};
+        for (var i = 0; i < spiders.length; i++) {
+            if (spiders[i].isMoving) {
+                spiders[i].isMoving = false;
+            } else {
+                spiders[i].isMoving = true;
+            }
         }
     }
 }
