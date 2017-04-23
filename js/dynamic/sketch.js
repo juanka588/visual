@@ -10,7 +10,7 @@ var dirs = [];
 function setup() {
     var canvas = createCanvas(600, 600, WEBGL);
     canvas.parent('sketch-holder');
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < 5; i++) {
         spiders[i] = new Spider(0, i * 100, 0, 100);
         switch (i) {
 //            case 0:
@@ -25,6 +25,7 @@ function setup() {
         }
     }
 //    batman = loadModel('assets/spider/Only_Spider_with_Animations_Export.obj');
+//    batman = loadModel('assets/globe/globe.obj');
 //    batman = loadModel("assets/Batman/BatmanArmoured.obj");
 //    img = loadImage("assets/spider/textures/Spinnen_Bein_tex.jpg");
     img = loadImage("images/cur-texture.jpg");
@@ -32,6 +33,8 @@ function setup() {
 }
 function draw() {
     background("white");
+    pointLight(255, 255, 255, 0, 0, 0);
+//    rotateZ(frameCount * 0.01);
     push();
     worldSize = width * 2;
     translate(0, 0, -worldSize - spiders[0].size);
@@ -40,9 +43,9 @@ function draw() {
     push();
     for (var i = 0; i < spiders.length; i++) {
         rotateZ(i * PI / 4);
-        //texture(img);
+        texture(img);
         push();
-        spiders[i].draw();
+        spiders[i].draw(worldSize);
         pop();
         spiders[i].move(worldSize, dirs[i]);
     }
@@ -51,9 +54,10 @@ function draw() {
     translate(0, 0, -worldSize - spiders[0].size);
 //    texture(world);
     specularMaterial(120, 120, 120, 120);
+//    rotateY(frameCount * 0.01);
+//    model(batman);
     sphere(worldSize);
     pop();
-//    model(batman);
     pop();
 }
 function keyPressed() {

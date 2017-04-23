@@ -7,19 +7,18 @@ function Spider(x, y, z, size) {
     this.speed = 0.9;
     this.isMoving = false;
     this.tmp = {x: 0, y: 0};
-    this.draw = function () {
-        var angle = ((this.z / (this.size + (width * 2))) + 1) * PI / 2 - PI / 2;
+    this.draw = function (wordSize) {
+        var angle = ((this.z / (this.size + (wordSize))) + 1) * PI / 2 - PI / 2;
         if (this.y > 0) {
             angle = angle * -1;
         }
         push();
         translate(this.x, this.y, this.z);
         push();
+//        rotateX(PI / 2 + angle);
         rotateX(angle);
         this.drawBody();
-//        specularMaterial(250, 120, 60);
-//        translate(0, 0, -this.size);
-//        plane(400, 400);
+//        model(batman);
         pop();
         if (this.isMoving) {
             var rotation = frameCount % 40;
@@ -74,8 +73,8 @@ function Spider(x, y, z, size) {
     this.drawBody = function () {
         push();
         sphere(this.size);
-        translate(0, -120, 0);
-        sphere(this.size - 30);
+        translate(0, -this.size * 1.2, 0);
+        sphere(this.size * 0.7);
         pop();
     };
 
