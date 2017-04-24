@@ -14,6 +14,8 @@ var chaserM = new chaser();
 var rampM = new ramp();
 var motionBid = new motionBiding();
 
+var controls = new Controls();
+
 function setup() {
     var canvas = createCanvas(600, 600);
     canvas.parent('sketch-holder');
@@ -25,6 +27,7 @@ function setup() {
 function draw() {
     background(255);
     push();
+    controls.controle();
     switch (current) {
         case 1:
             scintillating();

@@ -6,6 +6,8 @@
 var bullets = new Array();
 var ship;
 var enemyArray = new Array();
+var controls = new Controls();
+
 function setup() {
     var canvas = createCanvas(600, 600);
     canvas.parent('sketch-holder');
@@ -14,6 +16,8 @@ function setup() {
 
 }
 function draw() {
+    push();
+    controls.controle();
     background(0);
     ship.draw();
     for (var i = 0; i < enemyArray.length; i++) {
@@ -31,6 +35,7 @@ function draw() {
         bullets[i].draw();
         bullets[i].checkEnemy(enemyArray);
     }
+    pop();
 }
 function mouseClicked() {
     bullets.push(new Bullet(mouseX, height - 50));

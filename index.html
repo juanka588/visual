@@ -9,6 +9,14 @@ and open the template in the editor.
         <title>Game</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!--required for controls-->
+        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="css/materialize.min.css" rel="stylesheet" type="text/css"/>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="js/libs/materialize.min.js"></script>
+        <script src="js/controls.js"></script>
+
         <script src="js/libs/p5.js"></script>
         <script src="js/game/main.js"></script>
         <script src="js/game/bullet.js"></script>
@@ -16,26 +24,8 @@ and open the template in the editor.
         <script src="js/game/enemy.js"></script>
     </head>
     <body>
-        <div class="container">
-
-            <div class="row">
-                <div class="col s12" id="top-controls">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col s3" id="left-controls">
-                </div>
-                <div id="sketch-holder" class="col m6">
-                </div>
-                <div class="col s3" id="right-controls">
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col s12" id="bottom-controls">
-                </div>
-            </div>
-
+        <div class="main-container">
+            <div id="sketch-holder" class="col m6"></div>
         </div>
     </body>
 </html>

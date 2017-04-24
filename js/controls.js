@@ -13,6 +13,7 @@ function createElements() {
 
 function addListeners() {
     $('.collapsible').collapsible();
+    $(".button-collapse").sideNav();
     $('select').material_select();
     $('.modal').modal(
             {complete: function () {
