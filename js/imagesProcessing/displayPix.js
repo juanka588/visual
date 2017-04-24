@@ -14,9 +14,13 @@ function DisplayPixel(x, y, z, r, c) {
             p.pop();
         } else {
             push();
-            translate(this.x, this.y, this.z);
-            specularMaterial(this.color);
-            box(this.r);
+            if (isFlat) {
+                translate(this.x, this.y, 0);
+            } else {
+                translate(this.x, this.y, this.z);
+            }
+            ambientMaterial(this.color);
+            sphere(this.r);
             pop();
         }
     };
