@@ -1,4 +1,7 @@
 var docReady = false;
+var zoom = 0;
+var maxZoom = 1000;
+var minZoom = -1000;
 function createElements() {
     $.get("controlsView.html", function (data) {
 //        console.log(data);
@@ -60,9 +63,7 @@ function Controls() {
     this.axeAngleY;
     this.axeAngleZ;
 
-    this.cameraX;
-    this.cameraY;
-    this.cameraZ;
+    this.currentPos = {x: 0, y: 0, z: 0};
 
     this.lightColor;
     this.materialColor;
@@ -70,9 +71,34 @@ function Controls() {
     this.dirY;
     this.dirZ;
 
+    this.orbitControIsEnabled = false;
+
+    this.spacing = 10;
+    this.axisMagnitude = 100;
+
+    this.drawAxis = function () {
+        this.drawXAxis();
+        this.drawYAxis();
+        this.drawZAxis();
+    };
+    this.drawXAxis = function () {
+        push();
+        box(this.axisMagnitude, 10);
+        pop();
+    };
+    this.drawYAxis = function () {
+        push();
+        box(this.axisMagnitude, 10);
+        pop();
+    };
+    this.drawZAxis = function () {
+        push();
+        box(this.axisMagnitude, 10);
+        pop();
+    };
+
     this.setCustom = function (html) {
         $.get(html, function (data) {
-//        console.log(data);
             $(".custom-controls").html(data);
         });
     };
@@ -82,15 +108,13 @@ function Controls() {
             return;
         }
         var enabled3D = true;
-        this.axeAngleX = (document.getElementById('axeAngleX').value / 180) * PI;
-        this.axeAngleY = (document.getElementById('axeAngleY').value / 180) * PI;
-        this.axeAngleZ = (document.getElementById('axeAngleZ').value / 180) * PI;
-
-        this.cameraX = (document.getElementById('cameraX').value / 180) * PI;
-        this.cameraY = (document.getElementById('cameraY').value / 180) * PI;
-        this.cameraZ = (document.getElementById('cameraZ').value / 180) * PI;
+        this.getInputValues();
+        this.applyZoom();
         try {
-            camera(this.cameraX, this.cameraY, this.cameraZ);
+            if (this.orbitControIsEnabled) {
+                this.mouseControls();
+            }
+            camera(this.currentPos.x, this.currentPos.y, this.currentPos.Z);
             rotateY(this.axeAngleY);
             rotateX(this.axeAngleX);
             rotateZ(this.axeAngleZ);
@@ -102,6 +126,11 @@ function Controls() {
         if (!enabled3D) {
             return;
         }
+        this.applyLightsAndMaterials();
+
+    };
+
+    this.applyLightsAndMaterials = function () {
         this.lightColor = hexToRGB(document.getElementById('light-color').value);
         this.materialColor = document.getElementById('material-color').value;
         var locY = (mouseY / height - 0.5) * (-2);
@@ -135,9 +164,57 @@ function Controls() {
                 ambientMaterial(this.materialColor);
                 break;
         }
+    };
+
+    this.getInputValues = function () {
+        this.axeAngleX = (document.getElementById('axeAngleX').value / 180) * PI;
+        this.axeAngleY = (document.getElementById('axeAngleY').value / 180) * PI;
+        this.axeAngleZ = (document.getElementById('axeAngleZ').value / 180) * PI;
+
+        this.currentPos.x = (document.getElementById('cameraX').value / 180) * PI;
+        this.currentPos.y = (document.getElementById('cameraY').value / 180) * PI;
+        this.currentPos.z = (document.getElementById('cameraZ').value / 180) * PI;
+
+        this.orbitControIsEnabled = document.getElementById("orbitControlsEnabled").checked;
 
     };
+
+    this.applyZoom = function () {
+        var scl = map(zoom, -1000, 1000, 0.01, 3);
+        scale(scl, scl, scl);
+    };
+
+    this.mouseControls = function () {
+        if (isMousePressed) {
+            if (mouseButton == LEFT) {
+                this.axeAngleY = (mouseX - width / 2) / (width / 2);
+                this.axeAngleX = (mouseY - height / 2) / (width / 2);
+//                document.getElementById('axeAngleX').noUiSlider.set(this.axeAngleX);
+//                document.getElementById('axeAngleY').noUiSlider.set(this.axeAngleY);
+            }
+            if (mouseButton == RIGHT) {
+                this.currentPos.x = mouseX - width / 2;
+                this.currentPos.y = mouseY - height / 2;
+//                document.getElementById('cameraX').noUiSlider.set(this.currentPos.x);
+//                document.getElementById('cameraY').noUiSlider.set(this.currentPos.y);
+            }
+        }
+    };
 }
+
+function mouseWheel(event) {
+    print(event.delta);
+    //move the square according to the vertical scroll amount
+    zoom += event.delta;
+    if (zoom >= maxZoom) {
+        zoom = maxZoom;
+    } else if (zoom <= minZoom) {
+        zoom = minZoom;
+    }
+    //uncomment to block page scrolling
+    return false;
+}
+
 function hexToRGB(hex, alphaYes) {
     hex = hex.replace('#', '');
     var r = parseInt(hex.substring(0, hex.length / 3), 16);

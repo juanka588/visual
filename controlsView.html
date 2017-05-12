@@ -1,4 +1,5 @@
 <nav>
+    <script src="js/libs/nouislider.min.js" type="text/javascript"></script>
     <link href="css/controlStyle.css" rel="stylesheet" type="text/css"/>
     <div class="nav-wrapper">
         <a href="#!" class="brand-logo">Logo</a>
@@ -56,6 +57,16 @@
             <li>
                 <div class="collapsible-header"><i class="material-icons">open_with</i>Camera</div>
                 <div class="collapsible-body">
+                    Enable Orbit Controls
+                    <!-- Switch -->
+                    <div class="switch">
+                        <label>
+                            Off
+                            <input id="orbitControlsEnabled" type="checkbox">
+                            <span class="lever"></span>
+                            On
+                        </label>
+                    </div>
                     <p class="range-field">
                         <label for="cameraX">Camera X</label>
                         <input type="range" value="0" max="20000" min="-20000" step="100" id="cameraX">

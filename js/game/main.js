@@ -7,12 +7,21 @@ var bullets = new Array();
 var ship;
 var enemyArray = new Array();
 var controls = new Controls();
+var maxBullets = 10;
+var shipModel;
+var enemyModel;
+var bulletModel;
+
 
 function setup() {
-    var canvas = createCanvas(600, 600);
+    var canvas = createCanvas(600, 600, WEBGL);
     canvas.parent('sketch-holder');
-    enemyArray.push(new Enemy(width / 2, height / 2));
-    ship = new Ship(width / 2, height);
+//    shipModel = loadModel('assets/spider/Only_Spider_with_Animations_Export.obj');
+//    enemyModel = loadModel('assets/spider/Only_Spider_with_Animations_Export.obj');
+
+    enemyArray.push(new Enemy(width / 2, 0, 0, enemyModel));
+    ship = new Ship(0, 0, 0, shipModel);
+
 
 }
 function draw() {
@@ -20,10 +29,9 @@ function draw() {
     controls.controle();
     background(0);
     ship.draw();
-    for (var i = 0; i < enemyArray.length; i++) {
-
+    for (var i = enemyArray.length - 1; i >= 0; i--) {
         if (enemyArray[i].destroyed) {
-            //TODO: mustbe removed
+            enemyArray.splice(i, 1);
         } else {
             enemyArray[i].draw();
 
@@ -38,6 +46,10 @@ function draw() {
     pop();
 }
 function mouseClicked() {
-    bullets.push(new Bullet(mouseX, height - 50));
+    if (bullets.length <= maxBullets) {
+        bullets.push(new Bullet(mouseX, height - 50, 0));
+    } else {
+        bullets.splice(0, 1);
+    }
 }
 
