@@ -7,8 +7,12 @@
     <script src="js/libs/nouislider.min.js" type="text/javascript"></script>
 
     <div class="nav-wrapper">
-        <a href="#!" class="brand-logo">Logo</a>
-        <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+        <!--<a href="#!" class="brand-logo">Logo</a>-->
+        <a href="#" data-activates="mobile-demo" class="button-collapse">
+            <span class="grey-text text-darken-4">
+                <i class="material-icons">menu</i>
+            </span>
+        </a>
         <ul class="right hide-on-med-and-down">
             <li><a href="index.html"><span class="grey-text text-darken-4">Index</span></a></li>
             <li><a href="dynamic.html"><span class="grey-text text-darken-4">Fractal 3D</span></a></li>
@@ -62,15 +66,29 @@
             <li>
                 <div class="collapsible-header"><i class="material-icons">open_with</i>Camera</div>
                 <div class="collapsible-body">
-                    Enable Orbit Controls
-                    <!-- Switch -->
-                    <div class="switch">
-                        <label>
-                            Off
-                            <input id="orbitControlsEnabled" type="checkbox">
-                            <span class="lever"></span>
-                            On
-                        </label>
+                    <div>
+                        Enable Orbit Controls
+                        <!-- Switch -->
+                        <div class="switch">
+                            <label>
+                                Off
+                                <input id="orbitControlsEnabled" type="checkbox">
+                                <span class="lever"></span>
+                                On
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        Enable Zoom Wheel Controls
+                        <!-- Switch -->
+                        <div class="switch">
+                            <label>
+                                Off
+                                <input id="zoomWheel" type="checkbox">
+                                <span class="lever"></span>
+                                On
+                            </label>
+                        </div>
                     </div>
                     <p class="range-field">
                         <label for="cameraX">Camera X</label>
@@ -157,6 +175,18 @@
                         <input  class="col s6" type="color" value="#00FF48" id="material-color">
                     </p>
                     <div class="row">
+                        <div>
+                            <!-- Switch -->
+                            <div class="switch">
+                                Show Axis
+                                <label>
+                                    Off
+                                    <input id="showAxis" type="checkbox">
+                                    <span class="lever"></span>
+                                    On
+                                </label>
+                            </div>
+                        </div>
                         <div class="input-field col s12">
                             <select id="material-type">
                                 <option value="0">Normal</option>

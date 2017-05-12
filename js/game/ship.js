@@ -8,9 +8,12 @@ function Ship(x, y, z, m) {
         this.x = x;
     };
     this.draw = function () {
+        push();
+        translate(this.x, this.y, this.z);
         specularMaterial(0, 255, 0);
 //        rect(this.x, this.y, this.len, 10);
 //        model(this.shape);
         sphere(20);
+        pop();
     };
 }

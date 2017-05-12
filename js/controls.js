@@ -2,6 +2,7 @@ var docReady = false;
 var zoom = 0;
 var maxZoom = 1000;
 var minZoom = -1000;
+
 function createElements() {
     $.get("controlsView.html", function (data) {
 //        console.log(data);
@@ -72,6 +73,8 @@ function Controls() {
     this.dirZ;
 
     this.orbitControIsEnabled = false;
+    this.zoomWheelEnabled = false;
+    this.showAxis = false;
 
     this.spacing = 10;
     this.axisMagnitude = 100;
@@ -83,17 +86,23 @@ function Controls() {
     };
     this.drawXAxis = function () {
         push();
-        box(this.axisMagnitude, 10);
+        translate(this.axisMagnitude / 2, 0, 0);
+        specularMaterial(255, 0, 0);
+        box(this.axisMagnitude, 3, 3);
         pop();
     };
     this.drawYAxis = function () {
         push();
-        box(this.axisMagnitude, 10);
+        translate(0, -this.axisMagnitude / 2, 0);
+        specularMaterial(0, 255, 0);
+        box(3, this.axisMagnitude, 3);
         pop();
     };
     this.drawZAxis = function () {
         push();
-        box(this.axisMagnitude, 10);
+        translate(0, 0, this.axisMagnitude / 2);
+        specularMaterial(0, 0, 255);
+        box(3, 3, this.axisMagnitude);
         pop();
     };
 
@@ -109,7 +118,9 @@ function Controls() {
         }
         var enabled3D = true;
         this.getInputValues();
-        this.applyZoom();
+        if (this.zoomWheelEnabled) {
+            this.applyZoom();
+        }
         try {
             if (this.orbitControIsEnabled) {
                 this.mouseControls();
@@ -125,6 +136,9 @@ function Controls() {
         }
         if (!enabled3D) {
             return;
+        }
+        if (this.showAxis) {
+            this.drawAxis();
         }
         this.applyLightsAndMaterials();
 
@@ -176,6 +190,8 @@ function Controls() {
         this.currentPos.z = (document.getElementById('cameraZ').value / 180) * PI;
 
         this.orbitControIsEnabled = document.getElementById("orbitControlsEnabled").checked;
+        this.zoomWheelEnabled = document.getElementById("zoomWheel").checked;
+        this.showAxis = document.getElementById("showAxis").checked;
 
     };
 
@@ -188,7 +204,7 @@ function Controls() {
         if (isMousePressed) {
             if (mouseButton == LEFT) {
                 this.axeAngleY = (mouseX - width / 2) / (width / 2);
-                this.axeAngleX = (mouseY - height / 2) / (width / 2);
+                this.axeAngleX = (mouseY - height / 2) / (height / 2);
 //                document.getElementById('axeAngleX').noUiSlider.set(this.axeAngleX);
 //                document.getElementById('axeAngleY').noUiSlider.set(this.axeAngleY);
             }
@@ -203,8 +219,7 @@ function Controls() {
 }
 
 function mouseWheel(event) {
-    print(event.delta);
-    //move the square according to the vertical scroll amount
+    //print(event.delta);
     zoom += event.delta;
     if (zoom >= maxZoom) {
         zoom = maxZoom;

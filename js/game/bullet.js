@@ -10,8 +10,13 @@ function Bullet(x, y, z, m) {
 
     };
     this.draw = function () {
-        fill('blue');
-        ellipse(this.x, this.y, this.r, this.r);
+        push();
+        translate(this.x, this.y, this.z);
+        specularMaterial(0, 255, 255);
+        sphere(10);
+//        fill('blue');
+//        ellipse(this.x, this.y, this.r, this.r);
+        pop();
     };
 
     this.checkEnemy = function (enemyArray) {
