@@ -1,7 +1,8 @@
 var docReady = false;
 var zoom = 0;
 var maxZoom = 1000;
-var minZoom = -1000;
+var minZoom = -3000;
+var isDragging = false;
 
 function createElements() {
     $.get("controlsView.html", function (data) {
@@ -9,7 +10,6 @@ function createElements() {
         var sk = $("#sketch-holder");
         $(".main-container").html(data);
         $("#sketch-container").append(sk);
-//        alert("Load was performed.");
         addListeners();
         docReady = true;
     });
@@ -125,10 +125,10 @@ function Controls() {
             if (this.orbitControIsEnabled) {
                 this.mouseControls();
             }
-            camera(this.currentPos.x, this.currentPos.y, this.currentPos.Z);
-            rotateY(this.axeAngleY);
-            rotateX(this.axeAngleX);
-            rotateZ(this.axeAngleZ);
+            camera(this.currentPos.x, this.currentPos.y, this.currentPos.z);
+            rotateY(radians(this.axeAngleY));
+            rotateX(radians(this.axeAngleX));
+            rotateZ(radians(this.axeAngleZ));
         }
         catch (e) {
             rotate(this.axeAngleX);
@@ -181,13 +181,13 @@ function Controls() {
     };
 
     this.getInputValues = function () {
-        this.axeAngleX = (document.getElementById('axeAngleX').value / 180) * PI;
-        this.axeAngleY = (document.getElementById('axeAngleY').value / 180) * PI;
-        this.axeAngleZ = (document.getElementById('axeAngleZ').value / 180) * PI;
+        this.axeAngleX = parseFloat(document.getElementById('axeAngleX').value);
+        this.axeAngleY = parseFloat(document.getElementById('axeAngleY').value);
+        this.axeAngleZ = parseFloat(document.getElementById('axeAngleZ').value);
 
-        this.currentPos.x = (document.getElementById('cameraX').value / 180) * PI;
-        this.currentPos.y = (document.getElementById('cameraY').value / 180) * PI;
-        this.currentPos.z = (document.getElementById('cameraZ').value / 180) * PI;
+        this.currentPos.x = parseFloat(document.getElementById('cameraX').value);
+        this.currentPos.y = parseFloat(document.getElementById('cameraY').value);
+        this.currentPos.z = parseFloat(document.getElementById('cameraZ').value);
 
         this.orbitControIsEnabled = document.getElementById("orbitControlsEnabled").checked;
         this.zoomWheelEnabled = document.getElementById("zoomWheel").checked;
@@ -196,24 +196,44 @@ function Controls() {
     };
 
     this.applyZoom = function () {
-        var scl = map(zoom, -1000, 1000, 0.01, 3);
-        scale(scl, scl, scl);
+//        var scl = map(zoom, -1000, 1000, 0.01, 3);
+        this.currentPos.z = zoom;
+        camera(this.currentPos.x, this.currentPos.y, this.currentPos.z);
     };
 
     this.mouseControls = function () {
         if (isMousePressed) {
             if (mouseButton == LEFT) {
-                this.axeAngleY = (mouseX - width / 2) / (width / 2);
-                this.axeAngleX = (mouseY - height / 2) / (height / 2);
-//                document.getElementById('axeAngleX').noUiSlider.set(this.axeAngleX);
-//                document.getElementById('axeAngleY').noUiSlider.set(this.axeAngleY);
+                if (isDragging) {
+                    this.axeAngleY = 180 * (mouseX - width / 2) / (width / 2);
+                    this.axeAngleY = this.axeAngleY % 360;
+                    this.axeAngleX = 180 * (mouseY - height / 2) / (height / 2);
+                    this.axeAngleX = this.axeAngleX % 360;
+                } else {
+                    this.axeAngleY += 180 * (mouseX - width / 2) / (width / 2);
+                    this.axeAngleY = this.axeAngleY % 360;
+                    this.axeAngleX += 180 * (mouseY - height / 2) / (height / 2);
+                    this.axeAngleX = this.axeAngleX % 360;
+
+                }
+                isDragging = true;
+                $('#axeAngleX').val(this.axeAngleX);
+                $('#axeAngleY').val(this.axeAngleY);
             }
             if (mouseButton == RIGHT) {
-                this.currentPos.x = mouseX - width / 2;
-                this.currentPos.y = mouseY - height / 2;
-//                document.getElementById('cameraX').noUiSlider.set(this.currentPos.x);
-//                document.getElementById('cameraY').noUiSlider.set(this.currentPos.y);
+                if (this.currentPos.x === "") {
+                    this.currentPos.x = 0;
+                }
+                if (this.currentPos.y === "") {
+                    this.currentPos.y = 0;
+                }
+                this.currentPos.x += (mouseX - width / 2) / 20;
+                this.currentPos.y += (mouseY - height / 2) / 20;
+                $('#cameraX').val(this.currentPos.x);
+                $('#cameraY').val(this.currentPos.y);
             }
+        } else {
+            isDragging = false;
         }
     };
 }
