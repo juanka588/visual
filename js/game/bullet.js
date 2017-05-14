@@ -40,6 +40,7 @@ function Bullet(x, y, z, m) {
             var dis = dist(this.x, this.y, this.z, enemy.x, enemy.y, enemy.z);
             if (dis <= enemy.len + this.r) {
                 enemy.destroyed = true;
+                this.maxLife = -1;
             }
         }
 

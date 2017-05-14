@@ -1,7 +1,7 @@
 var docReady = false;
 var zoom = 0;
-var maxZoom = 1000;
-var minZoom = -3000;
+var maxZoom = 3000;
+var minZoom = -1000;
 var isDragging = false;
 
 function createElements() {
@@ -199,6 +199,7 @@ function Controls() {
 //        var scl = map(zoom, -1000, 1000, 0.01, 3);
         this.currentPos.z = zoom;
         camera(this.currentPos.x, this.currentPos.y, this.currentPos.z);
+        $('#cameraZ').val(this.currentPos.z);
     };
 
     this.mouseControls = function () {

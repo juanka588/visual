@@ -1,6 +1,6 @@
 function Ship(x, y, z, m) {
-    this.x = x - 50;
-    this.y = y - 50;
+    this.x = x;
+    this.y = y;
     this.z = z;
     this.shape = m;
     this.len = 20;
@@ -12,7 +12,11 @@ function Ship(x, y, z, m) {
         push();
         translate(this.x, this.y, this.z + this.len);
         specularMaterial(0, 255, 0);
-//        rect(this.x, this.y, this.len, 10);
+//        var angle = ((this.z / (this.len + (worldSize))) + 1) * PI / 2 - PI / 2;
+//        if (this.y > 0) {
+//            angle = angle * -1;
+//        }
+//        rotateX(angle);
 //        model(this.shape);
         sphere(this.len);
         pop();

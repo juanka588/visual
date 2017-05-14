@@ -7,8 +7,8 @@ function Spider(x, y, z, size) {
     this.speed = 0.9;
     this.isMoving = false;
     this.tmp = {x: 0, y: 0};
-    this.draw = function (wordSize) {
-        var angle = ((this.z / (this.size + (wordSize))) + 1) * PI / 2 - PI / 2;
+    this.draw = function (worldSize) {
+        var angle = ((this.z / (this.size + (worldSize))) + 1) * PI / 2 - PI / 2;
         if (this.y > 0) {
             angle = angle * -1;
         }
