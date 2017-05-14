@@ -3,24 +3,10 @@ function SphereEngine(sphereRadius) {
 
     this.drawElement = function (object) {
         push();
-
-        var pos = createVector(object.x, object.y, object.z);
-        var xLine = createVector(1, 0, 0);
-//        fill(0, 255, 255);
-//        box(30, 10, 10);
-        var angleb = p5.Vector.angleBetween(pos, xLine);
-        console.log(degrees(angleb));
-
-        var rAxis = xLine.cross(pos);
-//        console.log(rAxis);
-//        fill(255, 0, 255);
-//        box(10, 10, 30);
-
+        translate(0, 0, -this.r);
         translate(object.x, object.y, object.z);
-        rotateX(map(object.y, -this.r, this.r, radians(-100), radians(100)));
-        rotateY(map(object.x, -this.r, this.r, radians(-100), radians(100)));
-//        rotate(angleb, xLine);
-//        rotateY(radians(90));
+        rotateX(map(object.y, -this.r, this.r, radians(-90), radians(90)));
+        rotateY(map(object.x, -this.r, this.r, radians(-90), radians(90)));
 
         object.draw();
 
@@ -51,6 +37,13 @@ function SphereEngine(sphereRadius) {
             phi = random(0, 360);
         }
         this.moveElement(object, tetha, phi);
+    };
+
+    this.getAngles = function (object) {
+        var angles = {tetha: 0, phi: 0};
+        angles.tetha = acos(object.z / this.r);
+        angles.phi = atan(object.x / object.y);
+        return angles;
     };
 
 }

@@ -27,11 +27,11 @@ function setup() {
     shipModel = loadModel('assets/spider/Only_Spider_with_Animations_Export.obj');
     enemyModel = loadModel('assets/spider/Only_Spider_with_Animations_Export.obj');
 
-    worldSize = 120;
+    worldSize = 230;
 
     sEngine = new SphereEngine(worldSize);
-//    createEnemies();
-    testPos();
+    createEnemies();
+//    testPos();
 
     ship = new Ship(0, 0, 0, shipModel);
     sEngine.putObject(ship);
@@ -52,7 +52,7 @@ function testPos() {
         sEngine.moveElement(e, i * 10, 0);
         enemyArray.push(e);
     }
-    
+
     for (var i = 0; i < 36; i++) {
         var e = new Enemy(0, 0, 0, enemyModel, {r: 255, g: 255, b: 0});
         sEngine.moveElement(e, i * 10, 45);
@@ -70,14 +70,16 @@ function testPos() {
 function draw() {
     push();
     controls.controle();
-//    if (cameraMode == FP) {
-//        camera(ship.x, ship.y, ship.z);
-////    ortho(-width/2, width/2, height/2, -height/2, 0, 1000);
-//    } else {
-//        translate(0, 0, -worldSize);
-//    }
+    if (cameraMode == FP) {
+        camera(ship.x, ship.y, ship.z);
+//    ortho(-width/2, width/2, height/2, -height/2, 0, 1000);
+    } else {
+        translate(0, 0, -worldSize);
+    }
     if (trace) {
-        camera(enemyArray[enemyIndex].x, enemyArray[enemyIndex].y, enemyArray[enemyIndex].z - 350);
+        if (enemyIndex > -1) {
+            camera(enemyArray[enemyIndex].x, enemyArray[enemyIndex].y, enemyArray[enemyIndex].z - 350);
+        }
     }
     drawMainGame();
     drawWorld();
@@ -87,49 +89,56 @@ function draw() {
 function drawWorld() {
     push();
     translate(0, 0, -worldSize);
-    specularMaterial(120, 120, 120, 10);
+    specularMaterial(120, 120, 120, 120);
     sphere(worldSize);
     pop();
-//    noLoop();
 }
 
 function drawMainGame() {
     push();
     background(255);
-//    ship.draw();
+    sEngine.drawElement(ship);
+
     for (var i = enemyArray.length - 1; i >= 0; i--) {
         sEngine.drawElement(enemyArray[i]);
         if (enemyArray[i].destroyed) {
-//            enemyArray.splice(i, 1);
+            enemyArray.splice(i, 1);
+            enemyIndex = -1;
         }
     }
-//    ship.move(worldSize, {x: (mouseX - width / 2) / (width / 2), y: (mouseY - height / 2) / (height / 2)});
-//    for (var i = bullets.length - 1; i >= 0; i--) {
-//        bullets[i].move(worldSize);
-//        bullets[i].draw();
-//        bullets[i].checkEnemy(enemyArray);
-//        if (bullets[i].maxLife < 0) {
-//            bullets.splice(i, 1);
-//        }
-//    }
+
+    sEngine.moveElement(ship, 180 * (mouseX - width / 2) / (width / 2), 180 * (mouseY - height / 2) / (height / 2));
+
+    for (var i = bullets.length - 1; i >= 0; i--) {
+        var angles = sEngine.getAngles(bullets[i]);
+        sEngine.moveElement(bullets[i], angles.tetha, angles.phi);
+        sEngine.drawElement(bullets[i]);
+        bullets[i].live();
+        bullets[i].checkEnemy(enemyArray);
+        if (bullets[i].maxLife < 0) {
+            bullets.splice(i, 1);
+        }
+    }
+
     pop();
 }
 
 function mouseClicked() {
 //    if (bullets.length <= maxBullets) {
 //        bullets.push(new Bullet(ship.x, ship.y - 50, 0));
-//    } else {
-//        bullets.splice(0, 1);
-//    }
+//    } 
 }
 
 
 function keyPressed() {
     if (key === "A") {
-        console.log("espacio");
         trace = true;
         enemyIndex++;
         enemyIndex = enemyIndex % enemyArray.length;
+    }
+    if (key === "F") {
+        cameraMode++;
+        cameraMode = cameraMode % 2;
     }
     return false;
 }

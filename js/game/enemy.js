@@ -8,7 +8,7 @@ function Enemy(x, y, z, m, color) {
     this.destroyed = false;
 
     this.len = 30;
-    this.base = 20;
+    this.base = 5;
 
     this.draw = function () {
         push();
@@ -16,10 +16,11 @@ function Enemy(x, y, z, m, color) {
 //        rotateX(radians(90));
 //        scale(0.3, 0.3, 0.3);
 //        model(this.shape);
-        box(2, 2, this.len);
+        box(this.base, this.base, this.len);
 //        box(this.len);
         fill(color.r, color.g, color.b, 200);
-        plane(this.len, this.len);
+        sphere(this.base);
+//        plane(this.len, this.len);
         pop();
     };
 }
