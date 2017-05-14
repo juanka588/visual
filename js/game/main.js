@@ -16,6 +16,8 @@ var NORMAL = 0, FP = 1;
 var cameraMode = 0;
 var maxEnemies = 4;
 
+var sEngine;
+
 
 var enemyIndex = 0, trace = false;
 
@@ -27,51 +29,53 @@ function setup() {
 
     worldSize = 120;
 
+    sEngine = new SphereEngine(worldSize);
 //    createEnemies();
     testPos();
 
     ship = new Ship(0, 0, 0, shipModel);
+    sEngine.putObject(ship);
 }
 
 function createEnemies() {
     for (var i = 0; i < maxEnemies; i++) {
-        var e = new Enemy(0, 0, 0, enemyModel, {r: 255, g: 255, b: 255});
-        //alpha and tetha
-        e.move(random(0, 180), random(0, 180), worldSize);
+        var e = new Enemy(0, 0, 0, enemyModel, {r: 255, g: 0, b: 255});
         enemyArray.push(e);
+        sEngine.putObject(e);
     }
 
 }
 
 function testPos() {
-    var e = new Enemy(0, 0, 0, enemyModel, {r: 255, g: 0, b: 0});
-    e.move(90, 0, worldSize);
-    enemyArray.push(e);
+    for (var i = 0; i < 36; i++) {
+        var e = new Enemy(0, 0, 0, enemyModel, {r: 255, g: 0, b: 0});
+        sEngine.moveElement(e, i * 10, 0);
+        enemyArray.push(e);
+    }
+    
+    for (var i = 0; i < 36; i++) {
+        var e = new Enemy(0, 0, 0, enemyModel, {r: 255, g: 255, b: 0});
+        sEngine.moveElement(e, i * 10, 45);
+        enemyArray.push(e);
+    }
 
-    var e = new Enemy(0, 0, 0, enemyModel, {r: 255, g: 0, b: 0});
-    e.move(45, 0, worldSize);
-    enemyArray.push(e);
-
-    var e = new Enemy(0, 0, 0, enemyModel, {r: 0, g: 255, b: 255});
-    e.move(0, 90, worldSize);
-    enemyArray.push(e);
-
-    var e = new Enemy(0, 0, 0, enemyModel, {r: 0, g: 255, b: 255});
-    e.move(0, 45, worldSize);
-    enemyArray.push(e);
-
+    for (var i = 0; i < 36; i++) {
+        var e = new Enemy(0, 0, 0, enemyModel, {r: 0, g: 0, b: 255});
+        sEngine.moveElement(e, 45, i * 10);
+        enemyArray.push(e);
+    }
 }
 
 
 function draw() {
     push();
     controls.controle();
-    if (cameraMode == FP) {
-        camera(ship.x, ship.y, ship.z);
-//    ortho(-width/2, width/2, height/2, -height/2, 0, 1000);
-    } else {
-        translate(0, 0, -worldSize);
-    }
+//    if (cameraMode == FP) {
+//        camera(ship.x, ship.y, ship.z);
+////    ortho(-width/2, width/2, height/2, -height/2, 0, 1000);
+//    } else {
+//        translate(0, 0, -worldSize);
+//    }
     if (trace) {
         camera(enemyArray[enemyIndex].x, enemyArray[enemyIndex].y, enemyArray[enemyIndex].z - 350);
     }
@@ -86,6 +90,7 @@ function drawWorld() {
     specularMaterial(120, 120, 120, 10);
     sphere(worldSize);
     pop();
+//    noLoop();
 }
 
 function drawMainGame() {
@@ -93,20 +98,20 @@ function drawMainGame() {
     background(255);
 //    ship.draw();
     for (var i = enemyArray.length - 1; i >= 0; i--) {
-        enemyArray[i].draw();
+        sEngine.drawElement(enemyArray[i]);
         if (enemyArray[i].destroyed) {
 //            enemyArray.splice(i, 1);
         }
     }
 //    ship.move(worldSize, {x: (mouseX - width / 2) / (width / 2), y: (mouseY - height / 2) / (height / 2)});
-    for (var i = bullets.length - 1; i >= 0; i--) {
-        bullets[i].move(worldSize);
-        bullets[i].draw();
-        bullets[i].checkEnemy(enemyArray);
-        if (bullets[i].maxLife < 0) {
-            bullets.splice(i, 1);
-        }
-    }
+//    for (var i = bullets.length - 1; i >= 0; i--) {
+//        bullets[i].move(worldSize);
+//        bullets[i].draw();
+//        bullets[i].checkEnemy(enemyArray);
+//        if (bullets[i].maxLife < 0) {
+//            bullets.splice(i, 1);
+//        }
+//    }
     pop();
 }
 
