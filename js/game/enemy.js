@@ -16,11 +16,11 @@ function Enemy(x, y, z, m, color) {
 //        rotateX(radians(90));
 //        scale(0.3, 0.3, 0.3);
 //        model(this.shape);
+//        translate(0, 0, this.len / 2);
         box(this.base, this.base, this.len);
-//        box(this.len);
         fill(color.r, color.g, color.b, 200);
-        sphere(this.base);
-//        plane(this.len, this.len);
+//        sphere(this.base);
+        plane(this.len, this.len);
         pop();
     };
 }

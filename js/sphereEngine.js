@@ -41,8 +41,8 @@ function SphereEngine(sphereRadius) {
 
     this.getAngles = function (object) {
         var angles = {tetha: 0, phi: 0};
-        angles.tetha = acos(object.z / this.r);
-        angles.phi = atan(object.x / object.y);
+        angles.tetha = (degrees(acos(object.z / this.r)));
+        angles.phi = (degrees(atan(object.x / object.y)));
         return angles;
     };
 

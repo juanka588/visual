@@ -30,7 +30,7 @@ function setup() {
     worldSize = 230;
 
     sEngine = new SphereEngine(worldSize);
-    createEnemies();
+//    createEnemies();
 //    testPos();
 
     ship = new Ship(0, 0, 0, shipModel);
@@ -49,7 +49,7 @@ function createEnemies() {
 function testPos() {
     for (var i = 0; i < 36; i++) {
         var e = new Enemy(0, 0, 0, enemyModel, {r: 255, g: 0, b: 0});
-        sEngine.moveElement(e, i * 10, 0);
+        sEngine.moveElement(e, i * 10, 90);
         enemyArray.push(e);
     }
 
@@ -61,7 +61,7 @@ function testPos() {
 
     for (var i = 0; i < 36; i++) {
         var e = new Enemy(0, 0, 0, enemyModel, {r: 0, g: 0, b: 255});
-        sEngine.moveElement(e, 45, i * 10);
+        sEngine.moveElement(e, 90, i * 10);
         enemyArray.push(e);
     }
 }
@@ -111,8 +111,8 @@ function drawMainGame() {
 
     for (var i = bullets.length - 1; i >= 0; i--) {
         var angles = sEngine.getAngles(bullets[i]);
-        sEngine.moveElement(bullets[i], angles.tetha, angles.phi);
         sEngine.drawElement(bullets[i]);
+        sEngine.moveElement(bullets[i], angles.tetha - 1, angles.phi);
         bullets[i].live();
         bullets[i].checkEnemy(enemyArray);
         if (bullets[i].maxLife < 0) {
@@ -124,9 +124,15 @@ function drawMainGame() {
 }
 
 function mouseClicked() {
-//    if (bullets.length <= maxBullets) {
-//        bullets.push(new Bullet(ship.x, ship.y - 50, 0));
-//    } 
+    if (bullets.length < maxBullets) {
+        var b = new Bullet(0, 0, 0);
+        var angles = sEngine.getAngles(ship);
+        sEngine.putObject(b, 180,260);
+        angles= sEngine.getAngles(b);
+        console.assert(angles.tetha===180);
+        console.assert(angles.phi===0);
+        bullets.push(b);
+    }
 }
 
 

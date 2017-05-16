@@ -19,6 +19,9 @@ function addListeners() {
     $('.collapsible').collapsible();
     $(".button-collapse").sideNav();
     $('select').material_select();
+    $('#zoomWheel').prop('checked', true);
+    $('#showAxis').prop('checked', true);
+
     $('.modal').modal(
             {complete: function () {
                     var id = $(this)[0].id;
@@ -73,8 +76,8 @@ function Controls() {
     this.dirZ;
 
     this.orbitControIsEnabled = false;
-    this.zoomWheelEnabled = false;
-    this.showAxis = false;
+    this.zoomWheelEnabled = true;
+    this.showAxis = true;
 
     this.spacing = 10;
     this.axisMagnitude = 100;
