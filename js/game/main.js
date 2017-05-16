@@ -111,8 +111,8 @@ function drawMainGame() {
 
     for (var i = bullets.length - 1; i >= 0; i--) {
         var angles = sEngine.getAngles(bullets[i]);
-        sEngine.moveElement(bullets[i], angles.tetha, angles.phi);
         sEngine.drawElement(bullets[i]);
+        sEngine.moveElement(bullets[i], angles.tetha + 1, angles.phi + 1);
         bullets[i].live();
         bullets[i].checkEnemy(enemyArray);
         if (bullets[i].maxLife < 0) {
@@ -124,9 +124,12 @@ function drawMainGame() {
 }
 
 function mouseClicked() {
-//    if (bullets.length <= maxBullets) {
-//        bullets.push(new Bullet(ship.x, ship.y - 50, 0));
-//    } 
+    if (bullets.length <= maxBullets) {
+        var b = new Bullet(0, 0, 0);
+        var angles = sEngine.getAngles(ship);
+        sEngine.putObject(b, angles.tetha, angles.phi);
+        bullets.push(b);
+    }
 }
 
 

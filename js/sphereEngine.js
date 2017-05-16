@@ -15,8 +15,8 @@ function SphereEngine(sphereRadius) {
 
     this.moveElement = function (object, tetha, phi) {
         var newX, newY, newZ;
-        tetha = radians(tetha);
-        phi = radians(phi);
+        tetha = radians(tetha) % 360;
+        phi = radians(phi) % 360;
 
         newX = this.r * sin(tetha) * cos(phi);
         newY = this.r * sin(tetha) * sin(phi);
@@ -41,8 +41,8 @@ function SphereEngine(sphereRadius) {
 
     this.getAngles = function (object) {
         var angles = {tetha: 0, phi: 0};
-        angles.tetha = acos(object.z / this.r);
-        angles.phi = atan(object.x / object.y);
+        angles.tetha = degrees(acos(object.z / this.r));
+        angles.phi = degrees(atan(object.x / object.y));
         return angles;
     };
 
