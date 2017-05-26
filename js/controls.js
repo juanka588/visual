@@ -237,7 +237,6 @@ function Controls(navbarRef) {
                     this.lastPos.y = mouseY;
                     this.lastRotation.x = this.axeAngleX;
                     this.lastRotation.y = this.axeAngleY;
-                    console.log(this.lastPos);
                 }
                 isDragging = true;
                 $('#axeAngleX').val(this.axeAngleX);
@@ -259,7 +258,6 @@ function Controls(navbarRef) {
                     this.lastPos.y = mouseY;
                     this.lastRotation.x = this.axeAngleX;
                     this.lastRotation.y = this.axeAngleY;
-                    console.log(this.lastPos);
                 }
                 isDragging = true;
                 $('#cameraX').val(this.currentPos.x);

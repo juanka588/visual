@@ -7,7 +7,7 @@ var bullets = new Array();
 var ship;
 var enemyArray = new Array();
 var controls = new Controls();
-var maxBullets = 10;
+var maxBullets = 0;
 var shipModel;
 var enemyModel;
 var bulletModel;
@@ -31,7 +31,7 @@ function setup() {
 
     sEngine = new SphereEngine(worldSize);
 //    createEnemies();
-//    testPos();
+    testPos();
 
     ship = new Ship(0, 0, 0, shipModel);
     sEngine.putObject(ship);
@@ -55,7 +55,7 @@ function testPos() {
 
     for (var i = 0; i < 36; i++) {
         var e = new Enemy(0, 0, 0, enemyModel, {r: 255, g: 255, b: 0});
-        sEngine.moveElement(e, i * 10, 45);
+        sEngine.moveElement(e, i * 10, 180);
         enemyArray.push(e);
     }
 
@@ -72,7 +72,6 @@ function draw() {
     controls.controle();
     if (cameraMode == FP) {
         camera(ship.x, ship.y, ship.z);
-//    ortho(-width/2, width/2, height/2, -height/2, 0, 1000);
     } else {
         translate(0, 0, -worldSize);
     }
@@ -90,7 +89,7 @@ function drawWorld() {
     push();
     translate(0, 0, -worldSize);
     specularMaterial(120, 120, 120, 120);
-    sphere(worldSize);
+//    sphere(worldSize);
     pop();
 }
 

@@ -10,8 +10,8 @@ function Ship(x, y, z, m) {
         translate(0, 0, this.len);
         rotateX(radians(90));
         specularMaterial(0, 255, 0);
-        model(this.shape);
-//        sphere(this.len);
+//        model(this.shape);
+        sphere(this.len);
         pop();
     };
 }
