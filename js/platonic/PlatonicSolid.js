@@ -7,7 +7,8 @@ function PVector(x, y, z) {
     this.z = z;
 }
 
-function PlatonicSolid(x, y, z, r, type) {
+function PlatonicSolid(x, y, z, r, type, pg) {
+    this.pg = pg;
     this.x = x;
     this.y = y;
     this.z = z;
@@ -51,7 +52,7 @@ function PlatonicSolid(x, y, z, r, type) {
         endShape(CLOSE);
     };
     this.draw = function () {
-        push();
+        push();       
         translate(this.x, this.y, this.z);
         this.drawImmediate();
         pop();

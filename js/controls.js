@@ -30,6 +30,7 @@ function addListeners() {
     $('select').material_select();
     $('#zoomWheel').prop('checked', true);
     $('#showAxis').prop('checked', true);
+    $('#orbitControlsEnabled').prop('checked', true);
     $("#sketch-container").on('contextmenu', function (e) {
         e.preventDefault();
     }, false);
@@ -232,8 +233,6 @@ function Controls(navbarRef) {
                     this.axeAngleX = this.lastRotation.x + 180 * (mouseY - this.lastPos.y) / (height);
                     this.axeAngleX = this.axeAngleX % 360;
                 } else {
-//                    this.axeAngleY = 0;
-//                    this.axeAngleX = 0;
                     this.lastPos.x = mouseX;
                     this.lastPos.y = mouseY;
                     this.lastRotation.x = this.axeAngleX;
@@ -251,8 +250,18 @@ function Controls(navbarRef) {
                 if (this.currentPos.y === "") {
                     this.currentPos.y = 0;
                 }
-                this.currentPos.x += (mouseX - width / 2) / 20;
-                this.currentPos.y += (mouseY - height / 2) / 20;
+                if (isDragging) {
+                    this.currentPos.x = (mouseX - this.lastPos.x);
+                    this.currentPos.y = (mouseY - this.lastPos.y);
+                }
+                else {
+                    this.lastPos.x = mouseX;
+                    this.lastPos.y = mouseY;
+                    this.lastRotation.x = this.axeAngleX;
+                    this.lastRotation.y = this.axeAngleY;
+                    console.log(this.lastPos);
+                }
+                isDragging = true;
                 $('#cameraX').val(this.currentPos.x);
                 $('#cameraY').val(this.currentPos.y);
             }

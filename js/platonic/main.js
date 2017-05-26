@@ -12,23 +12,25 @@ var mouse = false;
 var solids = [];
 var totalObjs = 1;
 var radius = 200;
+var pg;
 
 
 function setup() {
     var canvas = createCanvas(600, 600, WEBGL);
     canvas.parent('sketch-holder');
+    pg = createGraphics(256, 256);
     init(DODECAHEDRON);
 }
 
 function init(type) {
     solids = [];
     for (var i = 0; i < totalObjs; i++) {
-        solids.push(new PlatonicSolid(i * radius, i * radius, 1, radius, type));
+        solids.push(new PlatonicSolid(i * radius, i * radius, 1, radius, type, pg));
     }
 }
 
 function draw() {
-    background(0);
+    background(255);
     push();
     if (controls !== undefined) {
         controls.controle();
