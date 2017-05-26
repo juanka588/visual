@@ -5,14 +5,23 @@ function SphereEngine(sphereRadius) {
         push();
         translate(0, 0, -this.r);
         translate(object.x, object.y, object.z);
-        
-        var angleX = 0;
+
+        var angleX = 0, angleY;
+
         if (object.z >= 0) {
-            angleX = map(object.y, 0, this.r, 180, 270);
+            angleY = map(object.x, 0, this.r, 180, 270);
         } else {
+            angleY = -map(object.x, -this.r, this.r, 270, 450);
+        }
+        rotateY(radians(angleY));
+
+        if (object.z >= 0) {
             angleX = -map(object.y, 0, this.r, 0, 90);
+        } else {
+            angleX = -map(object.y, -this.r, this.r, 270, 450);
         }
         rotateX(radians(angleX));
+
 
         object.draw();
 
