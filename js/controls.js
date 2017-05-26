@@ -4,7 +4,7 @@ var maxZoom = 3000;
 var minZoom = -1000;
 var isDragging = false;
 
-function createElements() {
+function createElements(navbarRef) {
     $.get("controlsView.html", function (data) {
 //        console.log(data);
         var sk = $("#sketch-holder");
@@ -13,6 +13,15 @@ function createElements() {
         addListeners();
         docReady = true;
     });
+    if (navbarRef) {
+        $.get(navbarRef, function (data) {
+            $("#navbar-container").append(data);
+        });
+    } else {
+        $.get("navbar.html", function (data) {
+            $("#navbar-container").append(data);
+        });
+    }
 }
 
 function addListeners() {
@@ -21,7 +30,9 @@ function addListeners() {
     $('select').material_select();
     $('#zoomWheel').prop('checked', true);
     $('#showAxis').prop('checked', true);
-
+    $("#sketch-container").on('contextmenu', function (e) {
+        e.preventDefault();
+    }, false);
     $('.modal').modal(
             {complete: function () {
                     var id = $(this)[0].id;
@@ -61,11 +72,14 @@ var lightToApply = 2;
  */
 var materialType = "1";
 
-function Controls() {
-    createElements();
+function Controls(navbarRef) {
+    createElements(navbarRef);
     this.axeAngleX;
     this.axeAngleY;
     this.axeAngleZ;
+
+    this.lastRotation = {x: 0, y: 0, z: 0};
+    this.lastPos = {x: 0, y: 0, z: 0};
 
     this.currentPos = {x: 0, y: 0, z: 0};
 
@@ -134,6 +148,7 @@ function Controls() {
             rotateZ(radians(this.axeAngleZ));
         }
         catch (e) {
+            console.log(e);
             rotate(this.axeAngleX);
             enabled3D = false;
         }
@@ -199,7 +214,6 @@ function Controls() {
     };
 
     this.applyZoom = function () {
-//        var scl = map(zoom, -1000, 1000, 0.01, 3);
         this.currentPos.z = zoom;
         camera(this.currentPos.x, this.currentPos.y, this.currentPos.z);
         $('#cameraZ').val(this.currentPos.z);
@@ -207,22 +221,24 @@ function Controls() {
 
     this.mouseControls = function () {
         if (isMousePressed) {
-            if(mouseX<0||mouseX>width||mouseY<0||mouseY>height){
+            if (mouseX < 0 || mouseX > width || mouseY < 0 || mouseY > height) {
                 //console.log("miss click");
                 return;
             }
             if (mouseButton === LEFT) {
                 if (isDragging) {
-                    this.axeAngleY = 180 * (mouseX - width / 2) / (width / 2);
+                    this.axeAngleY = this.lastRotation.y + 180 * (mouseX - this.lastPos.x) / (width);
                     this.axeAngleY = this.axeAngleY % 360;
-                    this.axeAngleX = 180 * (mouseY - height / 2) / (height / 2);
+                    this.axeAngleX = this.lastRotation.x + 180 * (mouseY - this.lastPos.y) / (height);
                     this.axeAngleX = this.axeAngleX % 360;
                 } else {
-                    this.axeAngleY += 180 * (mouseX - width / 2) / (width / 2);
-                    this.axeAngleY = this.axeAngleY % 360;
-                    this.axeAngleX += 180 * (mouseY - height / 2) / (height / 2);
-                    this.axeAngleX = this.axeAngleX % 360;
-
+//                    this.axeAngleY = 0;
+//                    this.axeAngleX = 0;
+                    this.lastPos.x = mouseX;
+                    this.lastPos.y = mouseY;
+                    this.lastRotation.x = this.axeAngleX;
+                    this.lastRotation.y = this.axeAngleY;
+                    console.log(this.lastPos);
                 }
                 isDragging = true;
                 $('#axeAngleX').val(this.axeAngleX);
