@@ -207,7 +207,11 @@ function Controls() {
 
     this.mouseControls = function () {
         if (isMousePressed) {
-            if (mouseButton == LEFT) {
+            if(mouseX<0||mouseX>width||mouseY<0||mouseY>height){
+                //console.log("miss click");
+                return;
+            }
+            if (mouseButton === LEFT) {
                 if (isDragging) {
                     this.axeAngleY = 180 * (mouseX - width / 2) / (width / 2);
                     this.axeAngleY = this.axeAngleY % 360;
@@ -224,7 +228,7 @@ function Controls() {
                 $('#axeAngleX').val(this.axeAngleX);
                 $('#axeAngleY').val(this.axeAngleY);
             }
-            if (mouseButton == RIGHT) {
+            if (mouseButton === RIGHT) {
                 if (this.currentPos.x === "") {
                     this.currentPos.x = 0;
                 }

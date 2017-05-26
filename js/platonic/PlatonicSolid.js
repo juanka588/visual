@@ -96,7 +96,11 @@ function Tetrahedron(ps) {
     ps.faces.push(v3);
     ps.faces.push(v2);
 }
-
+/**
+ * 
+ * @param {Platonic Solid} ps
+ * @returns created shape
+ */
 function Cube(ps) {
     var v1 = new PVector(-1 / sqrt(3), -1 / sqrt(3), -1 / sqrt(3));
     var v2 = new PVector(-1 / sqrt(3), -1 / sqrt(3), 1 / sqrt(3));
@@ -120,8 +124,8 @@ function Cube(ps) {
     ps.faces.push(v4);
     ps.faces.push(v3);
     ps.faces.push(v1);
-    ps.faces.push(v4);
     ps.faces.push(v1);
+    ps.faces.push(v4);
     ps.faces.push(v2);
 
     //face 2 
@@ -165,6 +169,11 @@ function Cube(ps) {
     ps.faces.push(v8);
 }
 
+/**
+ * 
+ * @param {Platonic Solid} ps
+ * @returns created shape
+ */
 function Octahedron(ps) {
     var v1 = new PVector(-1, 0, 0);
     var v2 = new PVector(0, 1, 0);
@@ -221,6 +230,11 @@ function Octahedron(ps) {
     ps.faces.push(v2);
 }
 
+/**
+ * 
+ * @param {Platonic Solid} ps
+ * @returns created shape
+ */
 function Dodecahedron(ps) {
     var max = 0.93;
     var ratio1 = 1.618033; //golden mean
@@ -429,6 +443,11 @@ function div(pVector, ratio) {
     return new PVector(pVector.x / ratio, pVector.y / ratio, pVector.z / ratio);
 }
 
+/**
+ * 
+ * @param {Platonic Solid} ps
+ * @returns created shape
+ */
 function Icosahedron(ps) {
     var ratio1 = 0.525731;
     var ratio2 = 0.850650;
