@@ -126,10 +126,11 @@ function drawMainGame() {
             enemyIndex = -1;
         }
     }
-    
+
     bindKeys();
 
-    sEngine.moveElement(ship);
+    sEngine.moveElement(ship, 180 * (mouseX - width / 2) / (width / 2), 180 * (mouseY - height / 2) / (height / 2));
+
 
     for (var i = bullets.length - 1; i >= 0; i--) {
         var angles = sEngine.getAngles(bullets[i]);
@@ -145,10 +146,10 @@ function drawMainGame() {
     pop();
 }
 
-function bindKeys(){
-    if(keyIsPressed === true){
+function bindKeys() {
+    if (keyIsPressed === true) {
         if (keyCode == UP_ARROW) {
-            
+
         }
     }
 }
