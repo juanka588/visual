@@ -49,11 +49,11 @@ function setup() {
     worldSize = 230;
 
     sEngine = new SphereEngine(worldSize);
-//    createEnemies();
-    testPos();
+    createEnemies();
+//    testPos();
 
     ship = new Ship(0, 0, 0, shipModel);
-    sEngine.putObject(ship);
+    sEngine.putObject(ship, 0, 0);
 }
 
 function createEnemies() {
@@ -81,11 +81,12 @@ function testPos() {
 
     for (var i = 0; i < 36; i++) {
         var e = new Enemy(0, 0, 0, enemyModel, {r: 255, g: 255, b: 0});
-        initial = 135;
+        //could be from -90 to 90
+        initial = 89;
         sEngine.moveElement(e, i * 10, initial);
         var angles = sEngine.getAngles(e);
         console.assert((abs(initial - angles.phi) - 0.0001) < 0, "phi must be " + initial + ", but found " + angles.phi
-                + " object posx " + e.x + " posy " + e.y + " posz " + e.z);
+                + " object posx " + e.x + " posy " + e.y + " posz " + e.z + " tetha " + angles.tetha);
         console.assert((abs(i * 10 - angles.tetha) - 0.0001) < 0, "tetha must be " + (i * 10) + ", but found " + angles.tetha
                 + " object posx " + e.x + " posy " + e.y + " posz " + e.z);
         enemyArray.push(e);
@@ -110,10 +111,10 @@ function draw() {
     push();
     controls.controle();
     if (cameraMode == FP) {
-        camera(ship.x, ship.y, ship.z);
+        translate(ship.x, ship.y, ship.z);
         var angles = sEngine.getTangentAngles(ship);
-        rotateY(radians(angles.angleY));
-        rotateX(radians(angles.angleX));
+//        rotateY(-radians(angles.angleY+90));
+//        rotateX(radians(angles.angleX - 90));
     } else {
         translate(0, 0, -worldSize);
     }
@@ -151,8 +152,10 @@ function drawMainGame() {
     bindKeys();
 
 //    sEngine.moveElement(ship, 180 * (mouseX - width / 2) / (width / 2), 180 * (mouseY - height / 2) / (height / 2));
-//    sEngine.moveElementDirected(ship, dir);
-
+    push();
+    rotateZ(radians(ship.headAngle));
+    sEngine.moveElementDirected(ship, dir);
+    pop();
 
     for (var i = bullets.length - 1; i >= 0; i--) {
         var angles = sEngine.getAngles(bullets[i]);
@@ -172,24 +175,18 @@ function bindKeys() {
     if (keyIsPressed) {
         switch (keyCode) {
             case UP_ARROW:
-                dir = {x: 0, y: -1};
-//                console.log("up");
+                dir = {x: -ship.speed, y: 0};
                 break;
             case DOWN_ARROW:
-                dir = {x: 0, y: 1};
-//                console.log("down");
+                dir = {x: ship.speed, y: 0};
                 break;
             case LEFT_ARROW:
-                dir = {x: -1, y: 0};
-                //must rotate
-//                console.log("left");
+                ship.headAngle++;
                 break;
             case RIGHT_ARROW:
-                dir = {x: 1, y: 0};
-//                console.log("rights");
+                ship.headAngle--;
                 break;
         }
-
     }
 }
 
@@ -219,4 +216,5 @@ function keyPressed() {
 
 function keyReleased() {
     keyIsPressed = false;
+    dir = {x: 0, y: 0};
 }

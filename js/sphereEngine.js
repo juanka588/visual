@@ -47,7 +47,7 @@ function SphereEngine(sphereRadius) {
 
     this.moveElementDirected = function (object, direction) {
         var angles = this.getAngles(object);
-        this.moveElement(object, angles.tetha + direction.x, angles.phi + direction.y);
+        this.moveElement(object, angles.tetha + direction.x, direction.y);
     };
 
     this.putObject = function (object, tetha, phi) {
@@ -77,20 +77,12 @@ function SphereEngine(sphereRadius) {
         angles.tetha = degrees(angles.tetha);
         angles.phi = degrees(angles.phi);
 
-        if (abs(object.z - this.r * 0.7071067811865476) < 0.0001) {
-//            angles.phi = angles.phi;
-        } else {
-//            angles.phi = 180 - angles.phi;
+        if (object.x < 0) {
+            angles.tetha = 360 - angles.tetha;
         }
 
-
-        if (abs(object.x) <= 0.0001) {
-            angles.tetha = 360 - angles.tetha;
-            if (abs(object.y) > 0.0001) {
-                angles.phi = 135;
-            } else {
-                angles.phi = 0;
-            }
+        if (angles.phi > 90) {
+            angles.phi *= -1;
         }
 
         return angles;
