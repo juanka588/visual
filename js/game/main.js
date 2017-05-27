@@ -1,25 +1,43 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * 
+ * enemies
  */
-var bullets = new Array();
-var ship;
-var enemyArray = new Array();
-var controls = new Controls();
-var maxBullets = 0;
-var shipModel;
-var enemyModel;
-var bulletModel;
-var worldSize;
-var NORMAL = 0, FP = 1;
-var cameraMode = 0;
 var maxEnemies = 4;
+var enemyModel;
+var enemyArray = new Array();
 
-var sEngine;
+/**
+ * 
+ * bullets
+ */
+var bulletModel;
+var maxBullets = 10;
+var bullets = new Array();
 
+/**
+ * wordl
+ */
+var worldSize;
 
+/**
+ * ship
+ */
+var shipModel;
+var ship;
+
+/**
+ * game options
+ */
+var cameraMode = 0;
+var NORMAL = 0, FP = 1;
 var enemyIndex = 0, trace = false;
+
+/**
+ * utils
+ */
+var sEngine;
+var controls = new Controls();
+
 
 function setup() {
     var canvas = createCanvas(600, 600, WEBGL);
@@ -30,8 +48,8 @@ function setup() {
     worldSize = 230;
 
     sEngine = new SphereEngine(worldSize);
-//    createEnemies();
-    testPos();
+    createEnemies();
+//    testPos();
 
     ship = new Ship(0, 0, 0, shipModel);
     sEngine.putObject(ship);
@@ -49,7 +67,7 @@ function createEnemies() {
 function testPos() {
     for (var i = 0; i < 36; i++) {
         var e = new Enemy(0, 0, 0, enemyModel, {r: 255, g: 0, b: 0});
-        sEngine.moveElement(e, i * 10, 90);
+        sEngine.moveElement(e, i * 10, 45);
         enemyArray.push(e);
     }
 
@@ -61,7 +79,7 @@ function testPos() {
 
     for (var i = 0; i < 36; i++) {
         var e = new Enemy(0, 0, 0, enemyModel, {r: 0, g: 0, b: 255});
-        sEngine.moveElement(e, 90, i * 10);
+        sEngine.moveElement(e, 45, i * 10);
         enemyArray.push(e);
     }
 }
@@ -72,6 +90,9 @@ function draw() {
     controls.controle();
     if (cameraMode == FP) {
         camera(ship.x, ship.y, ship.z);
+        var angles = sEngine.getTangentAngles(ship);
+        rotateY(radians(angles.angleY));
+        rotateX(radians(angles.angleX));
     } else {
         translate(0, 0, -worldSize);
     }
@@ -89,7 +110,7 @@ function drawWorld() {
     push();
     translate(0, 0, -worldSize);
     specularMaterial(120, 120, 120, 120);
-//    sphere(worldSize);
+    sphere(worldSize);
     pop();
 }
 
@@ -105,8 +126,10 @@ function drawMainGame() {
             enemyIndex = -1;
         }
     }
+    
+    bindKeys();
 
-    sEngine.moveElement(ship, 180 * (mouseX - width / 2) / (width / 2), 180 * (mouseY - height / 2) / (height / 2));
+    sEngine.moveElement(ship);
 
     for (var i = bullets.length - 1; i >= 0; i--) {
         var angles = sEngine.getAngles(bullets[i]);
@@ -122,14 +145,22 @@ function drawMainGame() {
     pop();
 }
 
+function bindKeys(){
+    if(keyIsPressed === true){
+        if (keyCode == UP_ARROW) {
+            
+        }
+    }
+}
+
 function mouseClicked() {
     if (bullets.length < maxBullets) {
         var b = new Bullet(0, 0, 0);
         var angles = sEngine.getAngles(ship);
-        sEngine.putObject(b, 180,260);
-        angles= sEngine.getAngles(b);
-        console.assert(angles.tetha===180);
-        console.assert(angles.phi===0);
+        sEngine.putObject(b, 180, 260);
+        angles = sEngine.getAngles(b);
+        console.assert(angles.tetha === 180);
+        console.assert(angles.phi === 0);
         bullets.push(b);
     }
 }

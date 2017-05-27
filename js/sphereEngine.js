@@ -6,6 +6,15 @@ function SphereEngine(sphereRadius) {
         translate(0, 0, -this.r);
         translate(object.x, object.y, object.z);
 
+        var angles = this.getTangentAngles(object);
+        rotateY(radians(angles.angleY));
+        rotateX(radians(angles.angleX));
+        object.draw();
+
+        pop();
+    };
+
+    this.getTangentAngles = function (object) {
         var angleX = 0, angleY;
 
         if (object.z >= 0) {
@@ -13,20 +22,14 @@ function SphereEngine(sphereRadius) {
         } else {
             angleY = -map(object.x, -this.r, this.r, 270, 450);
         }
-        rotateY(radians(angleY));
 
         if (object.z >= 0) {
             angleX = -map(object.y, 0, this.r, 0, 90);
         } else {
             angleX = -map(object.y, -this.r, this.r, 270, 450);
         }
-        rotateX(radians(angleX));
-
-
-        object.draw();
-
-        pop();
-    };
+        return {angleX: angleX, angleY: angleY};
+    }
 
     this.moveElement = function (object, tetha, phi) {
         var newX, newY, newZ;
