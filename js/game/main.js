@@ -24,6 +24,7 @@ var worldSize;
  */
 var shipModel;
 var ship;
+var dir = {x: 0, y: 0};
 
 /**
  * game options
@@ -48,8 +49,8 @@ function setup() {
     worldSize = 230;
 
     sEngine = new SphereEngine(worldSize);
-    createEnemies();
-//    testPos();
+//    createEnemies();
+    testPos();
 
     ship = new Ship(0, 0, 0, shipModel);
     sEngine.putObject(ship);
@@ -65,23 +66,43 @@ function createEnemies() {
 }
 
 function testPos() {
+    var initial;
     for (var i = 0; i < 36; i++) {
         var e = new Enemy(0, 0, 0, enemyModel, {r: 255, g: 0, b: 0});
-        sEngine.moveElement(e, i * 10, 45);
+        initial = 0;
+        sEngine.moveElement(e, i * 10, initial);
+        var angles = sEngine.getAngles(e);
+        console.assert((abs(initial - angles.phi) - 0.0001) < 0, "phi must be " + initial + ", but found " + angles.phi
+                + " object posx " + e.x + " posy " + e.y + " posz " + e.z);
+        console.assert((abs(i * 10 - angles.tetha) - 0.0001) < 0, "tetha must be " + (i * 10) + ", but found " + angles.tetha
+                + " object posx " + e.x + " posy " + e.y + " posz " + e.z);
         enemyArray.push(e);
     }
 
     for (var i = 0; i < 36; i++) {
         var e = new Enemy(0, 0, 0, enemyModel, {r: 255, g: 255, b: 0});
-        sEngine.moveElement(e, i * 10, 180);
+        initial = 135;
+        sEngine.moveElement(e, i * 10, initial);
+        var angles = sEngine.getAngles(e);
+        console.assert((abs(initial - angles.phi) - 0.0001) < 0, "phi must be " + initial + ", but found " + angles.phi
+                + " object posx " + e.x + " posy " + e.y + " posz " + e.z);
+        console.assert((abs(i * 10 - angles.tetha) - 0.0001) < 0, "tetha must be " + (i * 10) + ", but found " + angles.tetha
+                + " object posx " + e.x + " posy " + e.y + " posz " + e.z);
         enemyArray.push(e);
     }
 
-    for (var i = 0; i < 36; i++) {
-        var e = new Enemy(0, 0, 0, enemyModel, {r: 0, g: 0, b: 255});
-        sEngine.moveElement(e, 45, i * 10);
-        enemyArray.push(e);
-    }
+//    for (var i = 0; i < 36; i++) {
+//        var e = new Enemy(0, 0, 0, enemyModel, {r: 0, g: 0, b: 255});
+//        initial = 45;
+//        sEngine.moveElement(e, initial, i * 10);
+//        var angles = sEngine.getAngles(e);
+//        console.assert((abs(i * 10 - angles.phi) - 0.0001) < 0, "phi must be " + (i * 10) + ", but found " + angles.phi
+//                + " object posx " + e.x + " posy " + e.y + " posz " + e.z);
+//        console.assert((abs(initial - angles.tetha) - 0.0001) < 0, "tetha must be " + initial + ", but found " + angles.tetha
+//                + " object posx " + e.x + " posy " + e.y + " posz " + e.z);
+//
+//        enemyArray.push(e);
+//    }
 }
 
 
@@ -116,7 +137,7 @@ function drawWorld() {
 
 function drawMainGame() {
     push();
-    background(0);
+    background(255);
     sEngine.drawElement(ship);
 
     for (var i = enemyArray.length - 1; i >= 0; i--) {
@@ -129,7 +150,8 @@ function drawMainGame() {
 
     bindKeys();
 
-    sEngine.moveElement(ship, 180 * (mouseX - width / 2) / (width / 2), 180 * (mouseY - height / 2) / (height / 2));
+//    sEngine.moveElement(ship, 180 * (mouseX - width / 2) / (width / 2), 180 * (mouseY - height / 2) / (height / 2));
+//    sEngine.moveElementDirected(ship, dir);
 
 
     for (var i = bullets.length - 1; i >= 0; i--) {
@@ -147,10 +169,27 @@ function drawMainGame() {
 }
 
 function bindKeys() {
-    if (keyIsPressed === true) {
-        if (keyCode == UP_ARROW) {
-
+    if (keyIsPressed) {
+        switch (keyCode) {
+            case UP_ARROW:
+                dir = {x: 0, y: -1};
+//                console.log("up");
+                break;
+            case DOWN_ARROW:
+                dir = {x: 0, y: 1};
+//                console.log("down");
+                break;
+            case LEFT_ARROW:
+                dir = {x: -1, y: 0};
+                //must rotate
+//                console.log("left");
+                break;
+            case RIGHT_ARROW:
+                dir = {x: 1, y: 0};
+//                console.log("rights");
+                break;
         }
+
     }
 }
 
@@ -158,10 +197,8 @@ function mouseClicked() {
     if (bullets.length < maxBullets) {
         var b = new Bullet(0, 0, 0);
         var angles = sEngine.getAngles(ship);
-        sEngine.putObject(b, 180, 260);
+        sEngine.putObject(b, angles.tetha, angles.phi);
         angles = sEngine.getAngles(b);
-        console.assert(angles.tetha === 180);
-        console.assert(angles.phi === 0);
         bullets.push(b);
     }
 }
@@ -178,4 +215,8 @@ function keyPressed() {
         cameraMode = cameraMode % 2;
     }
     return false;
+}
+
+function keyReleased() {
+    keyIsPressed = false;
 }

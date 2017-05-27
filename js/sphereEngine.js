@@ -29,7 +29,7 @@ function SphereEngine(sphereRadius) {
             angleX = -map(object.y, -this.r, this.r, 270, 450);
         }
         return {angleX: angleX, angleY: angleY};
-    }
+    };
 
     this.moveElement = function (object, tetha, phi) {
         var newX, newY, newZ;
@@ -43,6 +43,11 @@ function SphereEngine(sphereRadius) {
         object.x = newX;
         object.y = newY;
         object.z = newZ;
+    };
+
+    this.moveElementDirected = function (object, direction) {
+        var angles = this.getAngles(object);
+        this.moveElement(object, angles.tetha + direction.x, angles.phi + direction.y);
     };
 
     this.putObject = function (object, tetha, phi) {
@@ -59,8 +64,35 @@ function SphereEngine(sphereRadius) {
 
     this.getAngles = function (object) {
         var angles = {tetha: 0, phi: 0};
-        angles.tetha = (degrees(acos(object.z / this.r)));
-        angles.phi = (degrees(atan(object.x / object.y)));
+        angles.tetha = acos(object.z / this.r);
+        if (abs(sin(angles.tetha)) > 0) {
+            if (object.x > 0) {
+                angles.phi = asin(object.y / (this.r * sin(angles.tetha)));
+            } else {
+                angles.phi = -asin(object.y / (this.r * sin(angles.tetha)));
+            }
+        } else {
+            angles.phi = 0;
+        }
+        angles.tetha = degrees(angles.tetha);
+        angles.phi = degrees(angles.phi);
+
+        if (abs(object.z - this.r * 0.7071067811865476) < 0.0001) {
+//            angles.phi = angles.phi;
+        } else {
+//            angles.phi = 180 - angles.phi;
+        }
+
+
+        if (abs(object.x) <= 0.0001) {
+            angles.tetha = 360 - angles.tetha;
+            if (abs(object.y) > 0.0001) {
+                angles.phi = 135;
+            } else {
+                angles.phi = 0;
+            }
+        }
+
         return angles;
     };
 

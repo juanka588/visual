@@ -5,7 +5,7 @@ function Bullet(x, y, z, m) {
     this.shape = m;
     this.r = 10;
 
-    this.maxLife = 1000;
+    this.maxLife = 500;
 
     this.vel = {x: 0, y: -1};
     this.tmp = {x: this.x, y: this.y};
