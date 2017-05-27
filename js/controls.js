@@ -4,6 +4,8 @@ var maxZoom = 3000;
 var minZoom = -1000;
 var isDragging = false;
 
+var originalSize = {w: 0, h: 0};
+
 function createElements(navbarRef) {
     $.get("controlsView.html", function (data) {
 //        console.log(data);
@@ -12,6 +14,7 @@ function createElements(navbarRef) {
         $("#sketch-container").append(sk);
         addListeners();
         docReady = true;
+        originalSize = {w: width, h: height};
     });
     if (navbarRef) {
         $.get(navbarRef, function (data) {
@@ -73,6 +76,8 @@ var lightToApply = 2;
  */
 var materialType = "1";
 
+var ORTHO = 1001, PERSPECTIVE = 1002;
+
 function Controls(navbarRef) {
     createElements(navbarRef);
     this.axeAngleX;
@@ -96,6 +101,8 @@ function Controls(navbarRef) {
 
     this.spacing = 10;
     this.axisMagnitude = 100;
+
+    this.cameraMode = ORTHO;
 
     this.drawAxis = function () {
         this.drawXAxis();
@@ -142,6 +149,13 @@ function Controls(navbarRef) {
         try {
             if (this.orbitControIsEnabled) {
                 this.mouseControls();
+            }
+            if (this.cameraMode === ORTHO) {
+//                ortho(-width / 2, width / 2, height / 2, -height / 2, -100, 500);
+            } else if (this.cameraMode === PERSPECTIVE) {
+                var fov = 120 / 180 * PI;
+                var cameraZ = (height / 2.0) / tan(fov / 2.0);
+                perspective(120 / 180 * PI, width / height, cameraZ * 0.01, cameraZ * 10);
             }
             camera(this.currentPos.x, this.currentPos.y, this.currentPos.z);
             rotateY(radians(this.axeAngleY));
@@ -211,6 +225,8 @@ function Controls(navbarRef) {
         this.orbitControIsEnabled = document.getElementById("orbitControlsEnabled").checked;
         this.zoomWheelEnabled = document.getElementById("zoomWheel").checked;
         this.showAxis = document.getElementById("showAxis").checked;
+
+        this.cameraMode = document.getElementById("cameraMode").checked ? PERSPECTIVE : ORTHO;
 
     };
 
@@ -296,4 +312,12 @@ function ColorArray(R, G, B, A) {
     this.G = G;
     this.B = B;
     this.A = A;
+}
+
+
+function windowResized() {
+    var rateW = windowWidth / displayWidth;
+    var rateH = windowHeight / displayHeight;
+    print("resized " + rateW + " " + rateH);
+    resizeCanvas(originalSize.w * rateW, originalSize.h * rateH);
 }

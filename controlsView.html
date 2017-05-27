@@ -20,18 +20,28 @@
             <li>
                 <div class="collapsible-header"><i class="material-icons">loop</i>Rotation</div>
                 <div class="collapsible-body">
-                    <p class="range-field">
-                        <label for="axeAngleX">Eje X</label>
-                        <input type="number" value="0" id="axeAngleX">
-                    </p>
-                    <p class="range-field">
-                        <label for="axeAngleY">Eje Y</label>
-                        <input type="number" value="0" id="axeAngleY">
-                    </p>
-                    <p class="range-field">
-                        <label for="axeAngleZ">Eje Z</label>
-                        <input type="number" value="0" id="axeAngleZ">
-                    </p>
+                    <table>
+                        <tr>
+                            <td>
+                                <p class="range-field">
+                                    <label for="axeAngleX">Eje X</label>
+                                    <input type="number" value="0" id="axeAngleX">
+                                </p>
+                            </td>
+                            <td>
+                                <p class="range-field">
+                                    <label for="axeAngleY">Eje Y</label>
+                                    <input type="number" value="0" id="axeAngleY">
+                                </p>
+                            </td>
+                            <td>
+                                <p class="range-field">
+                                    <label for="axeAngleZ">Eje Z</label>
+                                    <input type="number" value="0" id="axeAngleZ">
+                                </p>
+                            </td>
+                        </tr>
+                    </table>                    
                 </div>
             </li>
         </ul>
@@ -44,42 +54,72 @@
             <li>
                 <div class="collapsible-header"><i class="material-icons">open_with</i>Camera</div>
                 <div class="collapsible-body">
-                    <div>
-                        Enable Orbit Controls
+                    <div style="text-align: center">
+                        Camera Type
                         <!-- Switch -->
                         <div class="switch">
                             <label>
-                                Off
-                                <input id="orbitControlsEnabled" type="checkbox">
+                                Ortho
+                                <input id="cameraMode" type="checkbox">
                                 <span class="lever"></span>
-                                On
+                                Perspective
                             </label>
                         </div>
                     </div>
-                    <div>
-                        Enable Zoom Wheel Controls
-                        <!-- Switch -->
-                        <div class="switch">
-                            <label>
-                                Off
-                                <input id="zoomWheel" type="checkbox">
-                                <span class="lever"></span>
-                                On
-                            </label>
-                        </div>
-                    </div>
-                    <p class="range-field">
-                        <label class="active" for="cameraX">Camera X</label>
-                        <input type="number" value="0" id="cameraX">
-                    </p>
-                    <p class="range-field">
-                        <label class="active" for="cameraY">Camera Y</label>
-                        <input type="number" value="0" id="cameraY">
-                    </p>
-                    <p class="range-field">
-                        <label class="active" for="cameraZ">Camera Z</label>
-                        <input type="number" value="0" id="cameraZ">
-                    </p>
+                    <table>
+                        <tr>
+                            <td>
+                                <div>
+                                    Enable Orbit Controls
+                                    <!-- Switch -->
+                                    <div class="switch">
+                                        <label>
+                                            Off
+                                            <input id="orbitControlsEnabled" type="checkbox">
+                                            <span class="lever"></span>
+                                            On
+                                        </label>
+                                    </div>
+                                </div>
+                            </td> 
+                            <td>
+                                <div>
+                                    Enable Zoom Wheel Controls
+                                    <!-- Switch -->
+                                    <div class="switch">
+                                        <label>
+                                            Off
+                                            <input id="zoomWheel" type="checkbox">
+                                            <span class="lever"></span>
+                                            On
+                                        </label>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <table>
+                        <tr>
+                            <td>
+                                <p class="range-field">
+                                    <label class="active" for="cameraX">Camera X</label>
+                                    <input type="number" value="0" id="cameraX">
+                                </p>
+                            </td>
+                            <td>
+                                <p class="range-field">
+                                    <label class="active" for="cameraY">Camera Y</label>
+                                    <input type="number" value="0" id="cameraY">
+                                </p>
+                            </td>
+                            <td>
+                                <p class="range-field">
+                                    <label class="active" for="cameraZ">Camera Z</label>
+                                    <input type="number" value="0" id="cameraZ">
+                                </p>
+                            </td>
+                        </tr>
+                    </table>                    
                 </div>
             </li>
             <li>

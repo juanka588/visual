@@ -116,7 +116,7 @@ function drawWorld() {
 
 function drawMainGame() {
     push();
-    background(255);
+    background(0);
     sEngine.drawElement(ship);
 
     for (var i = enemyArray.length - 1; i >= 0; i--) {
