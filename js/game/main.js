@@ -24,7 +24,7 @@ var worldSize;
  */
 var shipModel;
 var ship;
-var dir = {x: 0, y: 0};
+var dir = 0;
 
 /**
  * game options
@@ -111,7 +111,7 @@ function draw() {
     push();
     controls.controle();
     if (cameraMode == FP) {
-        translate(ship.x, ship.y, ship.z);
+        camera(ship.x, ship.y, ship.z);
         var angles = sEngine.getTangentAngles(ship);
 //        rotateY(-radians(angles.angleY+90));
 //        rotateX(radians(angles.angleX - 90));
@@ -151,14 +151,11 @@ function drawMainGame() {
 
     bindKeys();
 
-//    sEngine.moveElement(ship, 180 * (mouseX - width / 2) / (width / 2), 180 * (mouseY - height / 2) / (height / 2));
-    push();
-    rotateZ(radians(ship.headAngle));
-    sEngine.moveElementDirected(ship, dir);
-    pop();
+    var angles = sEngine.getAngles(ship);
+    sEngine.moveElement(ship, angles.tetha + dir, ship.headAngle);
 
     for (var i = bullets.length - 1; i >= 0; i--) {
-        var angles = sEngine.getAngles(bullets[i]);
+        angles = sEngine.getAngles(bullets[i]);
         sEngine.drawElement(bullets[i]);
         sEngine.moveElement(bullets[i], angles.tetha - 1, angles.phi);
         bullets[i].live();
@@ -175,10 +172,10 @@ function bindKeys() {
     if (keyIsPressed) {
         switch (keyCode) {
             case UP_ARROW:
-                dir = {x: -ship.speed, y: 0};
+                dir = -ship.speed;
                 break;
             case DOWN_ARROW:
-                dir = {x: ship.speed, y: 0};
+                dir = ship.speed;
                 break;
             case LEFT_ARROW:
                 ship.headAngle++;
@@ -194,7 +191,7 @@ function mouseClicked() {
     if (bullets.length < maxBullets) {
         var b = new Bullet(0, 0, 0);
         var angles = sEngine.getAngles(ship);
-        sEngine.putObject(b, angles.tetha, angles.phi);
+        sEngine.putObject(b, angles.tetha + 90, angles.phi);
         angles = sEngine.getAngles(b);
         bullets.push(b);
     }
@@ -216,5 +213,5 @@ function keyPressed() {
 
 function keyReleased() {
     keyIsPressed = false;
-    dir = {x: 0, y: 0};
+    dir = 0;
 }

@@ -47,7 +47,7 @@ function SphereEngine(sphereRadius) {
 
     this.moveElementDirected = function (object, direction) {
         var angles = this.getAngles(object);
-        this.moveElement(object, angles.tetha + direction.x, direction.y);
+        this.moveElement(object, angles.tetha + direction.x, angles.phi + direction.y);
     };
 
     this.putObject = function (object, tetha, phi) {

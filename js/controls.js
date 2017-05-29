@@ -31,6 +31,7 @@ function addListeners() {
     $('.collapsible').collapsible();
     $(".button-collapse").sideNav();
     $('select').material_select();
+    $('select').material_select();
     $('#zoomWheel').prop('checked', true);
     $('#showAxis').prop('checked', true);
     $('#orbitControlsEnabled').prop('checked', true);
@@ -163,7 +164,7 @@ function Controls(navbarRef) {
             rotateZ(radians(this.axeAngleZ));
         }
         catch (e) {
-            console.log(e);
+//            console.log(e);
             rotate(this.axeAngleX);
             enabled3D = false;
         }
