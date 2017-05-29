@@ -11,7 +11,7 @@ var enemyArray = new Array();
  * bullets
  */
 var bulletModel;
-var maxBullets = 10;
+var maxBullets = 0;
 var bullets = new Array();
 
 /**
@@ -33,6 +33,16 @@ var cameraMode = 0;
 var NORMAL = 0, FP = 1;
 var enemyIndex = 0, trace = false;
 
+/***
+ * 
+ * sound
+ */
+var bulletSound, explosionSound;
+function preload() {
+    bulletSound = loadSound('assets/laser_shot.mp3');
+    explosionSound = loadSound('assets/explosion.mp3');
+}
+
 /**
  * utils
  */
@@ -49,8 +59,8 @@ function setup() {
     worldSize = 230;
 
     sEngine = new SphereEngine(worldSize);
-    createEnemies();
-//    testPos();
+//    createEnemies();
+    testPos();
 
     ship = new Ship(0, 0, 0, shipModel);
     sEngine.putObject(ship, 0, 0);
@@ -79,18 +89,18 @@ function testPos() {
         enemyArray.push(e);
     }
 
-    for (var i = 0; i < 36; i++) {
-        var e = new Enemy(0, 0, 0, enemyModel, {r: 255, g: 255, b: 0});
-        //could be from -90 to 90
-        initial = 89;
-        sEngine.moveElement(e, i * 10, initial);
-        var angles = sEngine.getAngles(e);
-        console.assert((abs(initial - angles.phi) - 0.0001) < 0, "phi must be " + initial + ", but found " + angles.phi
-                + " object posx " + e.x + " posy " + e.y + " posz " + e.z + " tetha " + angles.tetha);
-        console.assert((abs(i * 10 - angles.tetha) - 0.0001) < 0, "tetha must be " + (i * 10) + ", but found " + angles.tetha
-                + " object posx " + e.x + " posy " + e.y + " posz " + e.z);
-        enemyArray.push(e);
-    }
+//    for (var i = 0; i < 36; i++) {
+//        var e = new Enemy(0, 0, 0, enemyModel, {r: 255, g: 255, b: 0});
+//        //could be from -90 to 90
+//        initial = 89;
+//        sEngine.moveElement(e, i * 10, initial);
+//        var angles = sEngine.getAngles(e);
+//        console.assert((abs(initial - angles.phi) - 0.0001) < 0, "phi must be " + initial + ", but found " + angles.phi
+//                + " object posx " + e.x + " posy " + e.y + " posz " + e.z + " tetha " + angles.tetha);
+//        console.assert((abs(i * 10 - angles.tetha) - 0.0001) < 0, "tetha must be " + (i * 10) + ", but found " + angles.tetha
+//                + " object posx " + e.x + " posy " + e.y + " posz " + e.z);
+//        enemyArray.push(e);
+//    }
 
 //    for (var i = 0; i < 36; i++) {
 //        var e = new Enemy(0, 0, 0, enemyModel, {r: 0, g: 0, b: 255});
@@ -146,6 +156,8 @@ function drawMainGame() {
         if (enemyArray[i].destroyed) {
             enemyArray.splice(i, 1);
             enemyIndex = -1;
+            explosionSound.setVolume(0.1);
+            explosionSound.play();
         }
     }
 
@@ -153,7 +165,6 @@ function drawMainGame() {
 
     var angles = sEngine.getAngles(ship);
     sEngine.moveElement(ship, angles.tetha + dir, ship.headAngle);
-
     for (var i = bullets.length - 1; i >= 0; i--) {
         angles = sEngine.getAngles(bullets[i]);
         sEngine.drawElement(bullets[i]);
@@ -194,6 +205,8 @@ function mouseClicked() {
         sEngine.putObject(b, angles.tetha + 90, angles.phi);
         angles = sEngine.getAngles(b);
         bullets.push(b);
+        bulletSound.setVolume(0.1);
+        bulletSound.play();
     }
 }
 

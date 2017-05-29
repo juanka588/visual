@@ -30,7 +30,7 @@ function init(type) {
 }
 
 function draw() {
-    background(255);
+    background(0);
     push();
     if (controls !== undefined) {
         controls.controle();
