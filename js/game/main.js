@@ -61,8 +61,8 @@ function setup() {
     worldSize = 230;
 
     sEngine = new SphereEngine(worldSize);
-//    createEnemies();
-    testPos();
+    createEnemies();
+//    testPos();
 
     ship = new Ship(0, 0, 0, shipModel);
     sEngine.putObject(ship, 0, 0);
@@ -186,8 +186,8 @@ function drawMainGame() {
 
     for (var i = bullets.length - 1; i >= 0; i--) {
         angles = sEngine.getAngles(bullets[i]);
-        sEngine.drawElement(bullets[i]);
         sEngine.moveElement(bullets[i], angles.tetha - 1, angles.phi);
+        sEngine.drawElement(bullets[i]);
         bullets[i].live();
         bullets[i].checkEnemy(enemyArray);
         if (bullets[i].maxLife < 0) {
