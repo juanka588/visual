@@ -17,8 +17,8 @@ function Ship(x, y, z, m) {
 
         rotateY(radians(this.headAngle));
         
-//        model(this.shape);
-          sphere(this.len);
+        model(this.shape);
+//          sphere(this.len);
         pop();
     };
 }

@@ -61,8 +61,8 @@ function setup() {
     worldSize = 230;
 
     sEngine = new SphereEngine(worldSize);
-    createEnemies();
-//    testPos();
+//    createEnemies();
+    testPos();
 
     ship = new Ship(0, 0, 0, shipModel);
     sEngine.putObject(ship, 0, 0);
