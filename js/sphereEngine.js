@@ -65,15 +65,17 @@ function SphereEngine(sphereRadius) {
     this.getAngles = function (object) {
         var angles = {tetha: 0, phi: 0};
         angles.tetha = acos(object.z / this.r);
-        if (abs(sin(angles.tetha)) > 0) {
-            if (object.x > 0) {
-                angles.phi = asin(object.y / (this.r * sin(angles.tetha)));
-            } else {
-                angles.phi = -asin(object.y / (this.r * sin(angles.tetha)));
-            }
-        } else {
-            angles.phi = 0;
-        }
+        angles.phi = asin(object.y / (this.r * sin(angles.tetha)));
+
+//        if (abs(sin(angles.tetha)) > 0) {
+//            if (object.x > 0) {
+//                angles.phi = asin(object.y / (this.r * sin(angles.tetha)));
+//            } else {
+//                angles.phi = -asin(object.y / (this.r * sin(angles.tetha)));
+//            }
+//        } else {
+//            angles.phi = 0;
+//        }
         angles.tetha = degrees(angles.tetha);
         angles.phi = degrees(angles.phi);
 
@@ -81,10 +83,10 @@ function SphereEngine(sphereRadius) {
             angles.tetha = 360 - angles.tetha;
         }
 
-        if (angles.phi > 90) {
-            angles.phi *= -1;
+        if (angles.phi < 0) {
+//            angles.phi = 360 + angles.phi;
         }
-
+//        angles.phi = 0;
         return angles;
     };
 
