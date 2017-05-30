@@ -1,3 +1,4 @@
+var img;
 function Enemy(x, y, z, m, color) {
     this.x = x;
     this.y = y;
@@ -11,12 +12,13 @@ function Enemy(x, y, z, m, color) {
     this.base = 5;
 
     this.draw = function () {
-//        push();
-//        specularMaterial(color.r, color.g, color.b, 255);
+        push();
+        specularMaterial(color.r, color.g, color.b, 255);
+//        texture(img);
 //        plane(this.len, this.len);
 //        pop();
-        push();
-        specularMaterial(255, 0, 0);
+//        push();
+//        specularMaterial(255, 0, 0);
 //        rotateX(radians(90));
 //        scale(0.3, 0.3, 0.3);
 //        model(this.shape);

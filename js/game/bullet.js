@@ -4,6 +4,7 @@ function Bullet(x, y, z, m) {
     this.z = z;
     this.shape = m;
     this.r = 10;
+    this.color = {h: random(0, 360)};
 
     this.maxLife = 500;
 
@@ -16,8 +17,9 @@ function Bullet(x, y, z, m) {
 
     this.draw = function () {
         push();
-//        translate(0, 0, this.r);
-        specularMaterial(0, 255, 255);
+        translate(0, 0, -this.r);
+        colorMode("HSL");
+        specularMaterial(this.color.h, 100, 100);
         sphere(this.r);
         pop();
     };
@@ -26,7 +28,7 @@ function Bullet(x, y, z, m) {
         for (var i = 0; i < enemyArray.length; i++) {
             var enemy = enemyArray[i];
             var dis = dist(this.x, this.y, this.z, enemy.x, enemy.y, enemy.z);
-            if (dis <= enemy.len + this.r) {
+            if (dis <= enemy.base + this.r) {
                 enemy.destroyed = true;
                 this.maxLife = -1;
             }

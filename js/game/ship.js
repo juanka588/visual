@@ -10,7 +10,7 @@ function Ship(x, y, z, m) {
     this.draw = function () {
         push();
         specularMaterial(0, 255, 0);
-        plane(this.len);
+//        plane(this.len);
         rotateX(radians(90));
         rotateZ(radians(180));
         scale(0.3, 0.3, 0.3);
