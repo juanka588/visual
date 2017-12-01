@@ -104,26 +104,26 @@ function testPos() {
 //        enemyArray.push(e);
 //    }
 
-//    for (var i = 0; i < 36; i++) {
-//        var e = new Enemy(0, 0, 0, enemyModel, {r: 0, g: 0, b: 255});
-//        //could be from -180 to 180 --> 0 to 360
-//        initial = 45;
-//        sEngine.moveElement(e, initial, i * 10);
-//        var angles = sEngine.getAngles(e);
-//        console.assert((abs(i * 10 - angles.phi) - 0.0001) < 0, "phi must be " + (i * 10) + ", but found " + angles.phi
-//                + " object posx " + e.x + " posy " + e.y + " posz " + e.z + " with tetha: " + angles.tetha);
-//        console.assert((abs(initial - angles.tetha) - 0.0001) < 0, "tetha must be " + initial + ", but found " + angles.tetha
-//                + " object posx " + e.x + " posy " + e.y + " posz " + e.z + " with phi: " + angles.phi);
-//
-//        enemyArray.push(e);
-//    }
-    for (var i = 0; i < 18; i++) {
-        for (var j = 0; j < 36; j++) {
-            var e = new Enemy(0, 0, 0, enemyModel, {r: i * 10, g: j * 10, b: i * j * 10});
-            sEngine.moveElement(e, i * 10, j * 10);
-            enemyArray.push(e);
-        }
+    for (var i = 0; i < 36; i++) {
+        var e = new Enemy(0, 0, 0, enemyModel, {r: 0, g: 0, b: 255});
+        //could be from -180 to 180 --> 0 to 360
+        initial = 45;
+        sEngine.moveElement(e, initial, i * 10);
+        var angles = sEngine.getAngles(e);
+        console.assert((abs(i * 10 - angles.phi) - 0.0001) < 0, "phi must be " + (i * 10) + ", but found " + angles.phi
+                + " object posx " + e.x + " posy " + e.y + " posz " + e.z + " with tetha: " + angles.tetha);
+        console.assert((abs(initial - angles.tetha) - 0.0001) < 0, "tetha must be " + initial + ", but found " + angles.tetha
+                + " object posx " + e.x + " posy " + e.y + " posz " + e.z + " with phi: " + angles.phi);
+
+        enemyArray.push(e);
     }
+//    for (var i = 0; i < 18; i++) {
+//        for (var j = 0; j < 36; j++) {
+//            var e = new Enemy(0, 0, 0, enemyModel, {r: i * 10, g: j * 10, b: i * j * 10});
+//            sEngine.moveElement(e, i * 10, j * 10);
+//            enemyArray.push(e);
+//        }
+//    }
 
 }
 

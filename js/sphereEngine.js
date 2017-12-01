@@ -79,13 +79,13 @@ function SphereEngine(sphereRadius) {
         angles.tetha = degrees(angles.tetha);
         angles.phi = degrees(angles.phi);
 
-        if (object.x < 0) {
-            angles.tetha = 360 - angles.tetha;
-        }
-
-        if (angles.phi < 0) {
-            angles.phi = 360 + angles.phi;
-        }
+//        if (object.x < 0) {
+//            angles.tetha = 360 - angles.tetha;
+//        }
+//
+//        if (angles.phi < 0) {
+//            angles.phi = 360 + angles.phi;
+//        }
         return angles;
     };
 
